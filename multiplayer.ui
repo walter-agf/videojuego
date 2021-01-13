@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>multiplayer</class>
+ <widget class="QMainWindow" name="multiplayer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1282</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1282</width>
+    <height>780</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1282</width>
+    <height>780</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1282</width>
+      <height>722</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1282</width>
+      <height>722</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1282</width>
+      <height>722</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1282</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOpciones">
+    <property name="title">
+     <string>Opciones</string>
+    </property>
+    <addaction name="actionVolver"/>
+    <addaction name="actionReiniciar"/>
+   </widget>
+   <widget class="QMenu" name="menuAyuda">
+    <property name="title">
+     <string>Ayuda</string>
+    </property>
+    <addaction name="actionComo_jugar"/>
+   </widget>
+   <addaction name="menuOpciones"/>
+   <addaction name="menuAyuda"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionVolver">
+   <property name="text">
+    <string>Volver</string>
+   </property>
+  </action>
+  <action name="actionReiniciar">
+   <property name="text">
+    <string>Reiniciar</string>
+   </property>
+  </action>
+  <action name="actionComo_jugar">
+   <property name="text">
+    <string>Como jugar</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
