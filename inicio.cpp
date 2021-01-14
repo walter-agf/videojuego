@@ -6,7 +6,7 @@ inicio::inicio(QObject *parent) : QObject(parent)
     filas = 0;
     columnas = 0;
 
-    pixmap_inicio = new QPixmap(":/pictures/innicio.png");
+    pixmap_inicio = new QPixmap(":/pictures/painting-3995999_1280.jpg");
 
     //dimensiones de cada imagen
     ancho = 1280;
