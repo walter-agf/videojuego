@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QMediaPlayer>
 #include "elemento.h"
 #include "grafica.h"
 #include "oneplayer.h"

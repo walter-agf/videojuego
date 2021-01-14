@@ -3,7 +3,7 @@
 grafica::grafica(QObject *parent) : QObject(parent)
 {
     float posx,posy,velx,vely,mass,r,K,e,ancho,alto;
-    posx = 200;
+    posx = 50;
     posy = 300;
     r = 20;
     mass = 50;
