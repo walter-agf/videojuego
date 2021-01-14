@@ -20,9 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     personaje->setPos(640,360);
 
-    QMediaPlayer *musica = new QMediaPlayer();
-    musica->setMedia(QUrl("qrc:/sonidos/2020_01.mp3"));
-    musica->play();
+
 
 }
 
