@@ -11,5 +11,9 @@
         <file>pictures/nivel_1.png</file>
         <file>pictures/innicio.png</file>
         <file>sonidos/2020_01.mp3</file>
+        <file>niveles/nivel_1/1_1.txt</file>
+        <file>niveles/nivel_1/2_1.txt</file>
+        <file>niveles/nivel_1/3_1.txt</file>
+        <file>niveles/nivel_1/4_1.txt</file>
     </qresource>
 </RCC>

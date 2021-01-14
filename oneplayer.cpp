@@ -28,6 +28,9 @@ oneplayer::oneplayer(QWidget *parent) :
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
+
+    contras.push_back(new muros(50, 550, 0, 0)); scene->addItem(contras.back());
+
 }
 
 oneplayer::~oneplayer()

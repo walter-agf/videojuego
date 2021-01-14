@@ -7,6 +7,8 @@
 #include <QKeyEvent>
 #include "elemento.h"
 #include "grafica.h"
+#include "muros.h"
+
 
 namespace Ui {
 class oneplayer;
@@ -19,6 +21,10 @@ class oneplayer : public QMainWindow
 public:
     explicit oneplayer(QWidget *parent = nullptr);
     ~oneplayer();
+
+    QList<muros *> contras;
+
+    QList<QString *> ubicaciones;
 
 public slots:
     void actualizar();
