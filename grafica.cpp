@@ -2,24 +2,13 @@
 
 grafica::grafica(QObject *parent) : QObject(parent)
 {
-    float posx,posy,velx,vely,mass,r,K,e,ancho,alto;
-    posx = 50;
-    posy = 300;
-    r = 20;
-    mass = 50;
-    velx = 0;
-    vely = 0;
-    K = 0.1;
-    e = 0.2;
-    ancho = 44;
-    alto = 40;
     esf = new elemento(posx,posy,velx,vely,mass,r,K,e,ancho,alto);
 
     timer = new QTimer();
     filas = 0;
     columnas = 0;
 
-    pixmap = new QPixmap(":/pictures/Escudero.png");
+    pixmap = new QPixmap(":/pictures/personaje_1_1.png");
 
     timer->start(48);
     connect(timer,&QTimer::timeout,this,&grafica::actualizacion_sprites);
@@ -93,10 +82,35 @@ void grafica::actualizacion_sprites()
         }
 
     }
+
+    else if (moment == 4){
+
+        filas = 160;
+        columnas += 44;
+        if(columnas >= 132){
+            columnas =0;
+        }
+
+    }
+
+    else if (moment == 5){
+
+        filas = 200;
+        columnas += 44;
+        if(columnas >= 132){
+            columnas =0;
+        }
+
+    }
+
     this->update(-esf->getAncho()/2,-esf->getAlto()/2,esf->getAncho(),esf->getAlto());
 
 
-    if (moment == 2 )moment = 0;
-    else if (moment == 3 )moment = 1;
+    if (moment == 2)moment = 0;
+    else if (moment == 3)moment = 1;
 
+    if (esf->getVY() <= 1 && esf->getVY() >= -1){
+        if (moment == 4)moment = 0;
+        else if (moment == 5)moment = 1;
+    }
 }

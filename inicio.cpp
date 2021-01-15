@@ -6,13 +6,26 @@ inicio::inicio(QObject *parent) : QObject(parent)
     filas = 0;
     columnas = 0;
 
-    pixmap_inicio = new QPixmap(":/pictures/painting-3995999_1280.jpg");
+    pixmap_inicio = new QPixmap(":/pictures/fondo.png");
 
     //dimensiones de cada imagen
     ancho = 1280;
     alto = 720;
 
-    timer_inicio->start(24);
+    //Configuracion de la musica
+    //Creacion de playlist
+    playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/sonidos/Spring Village.ogg"));
+    playlist->addMedia(QUrl("qrc:/sonidos/Shinrin-Yoku.ogg"));
+    playlist->addMedia(QUrl("qrc:/sonidos/Lyonesse.ogg"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+    //configuracion del reproductor
+    musica = new QMediaPlayer();
+    musica->setPlaylist(playlist);
+    musica->play();
+
+    timer_inicio->start(64);
     connect(timer_inicio,&QTimer::timeout,this,&inicio::Actualizacion_Inicio);
 
 }
@@ -20,11 +33,11 @@ inicio::inicio(QObject *parent) : QObject(parent)
 void inicio::Actualizacion_Inicio()
 {
     columnas += 1280;
-    if(columnas >= 10240){
+    if(columnas >= 5120){
         columnas = 0;
         filas += 720;
 
-        if (filas >= 8640){
+        if (filas >= 3600){
             columnas = 0;
             filas = 0;
         }

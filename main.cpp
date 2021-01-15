@@ -8,10 +8,5 @@ int main(int argc, char *argv[])
     a.setStyle("fusion");
     MainWindow w;
     w.show();
-
-    QMediaPlayer *musica = new QMediaPlayer();
-    musica->setMedia(QUrl("qrc:/sonidos/Spring Village.ogg"));
-    musica->play();
-
     return a.exec();
 }

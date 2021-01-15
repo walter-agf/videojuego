@@ -83,7 +83,10 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
 
     }
-    else if(event->key() == Qt::Key_W){
+    else if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
+
+        if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) bars.at(0)->moment = 4;
+        else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) bars.at(0)->moment = 5;
 
         b->set_vel(b->getVX(),60,b->getPX(),b->getPY());
 

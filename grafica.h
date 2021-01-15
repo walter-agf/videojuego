@@ -30,6 +30,18 @@ public:
     void actualizar_grafica(float v_lim);
     elemento *getEsf();
 
+    float posx = 50;
+    float posy = 300;
+    float r = 20;
+    float mass = 50;
+    float velx = 0;
+    float vely = 0;
+    float K = 0.1;
+    float e = 0.2;
+    float ancho = 44;
+    float alto = 40;
+
+
 public slots:
     void actualizacion_sprites();
 

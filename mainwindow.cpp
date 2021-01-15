@@ -19,9 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(personaje);
 
     personaje->setPos(640,360);
-
-
-
 }
 
 MainWindow::~MainWindow()

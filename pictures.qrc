@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>pictures/caballero.png</file>
-        <file>pictures/Escudero.png</file>
         <file>pictures/Minotaur_-_Sprite_Sheet.png</file>
         <file>pictures/painting-3995999_1280.jpg</file>
         <file>pictures/jugador.png</file>
@@ -14,5 +13,9 @@
         <file>niveles/nivel_1/4_1.txt</file>
         <file>sonidos/Spring Village.ogg</file>
         <file>pictures/nivel_1.png</file>
+        <file>pictures/personaje_1_1.png</file>
+        <file>pictures/fondo.png</file>
+        <file>sonidos/Lyonesse.ogg</file>
+        <file>sonidos/Shinrin-Yoku.ogg</file>
     </qresource>
 </RCC>

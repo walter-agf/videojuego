@@ -7,6 +7,9 @@
 #include <QPixmap>
 #include <QPainter>
 
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+
 class inicio : public QObject, public QGraphicsItem
 {
     Q_OBJECT
@@ -18,6 +21,10 @@ public:
 
     float filas, columnas;
     float ancho, alto;
+
+    QMediaPlaylist *playlist;
+    QMediaPlayer *musica;
+
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
