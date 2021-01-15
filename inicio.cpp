@@ -15,9 +15,8 @@ inicio::inicio(QObject *parent) : QObject(parent)
     //Configuracion de la musica
     //Creacion de playlist
     playlist = new QMediaPlaylist();
-    playlist->addMedia(QUrl("qrc:/sonidos/Spring Village.ogg"));
-    playlist->addMedia(QUrl("qrc:/sonidos/Shinrin-Yoku.ogg"));
-    playlist->addMedia(QUrl("qrc:/sonidos/Lyonesse.ogg"));
+    playlist->addMedia(QUrl("qrc:/sonidos/Spring_Village.mp3"));
+    playlist->addMedia(QUrl("qrc:/sonidos/Shinrin-Yoku.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
     //configuracion del reproductor

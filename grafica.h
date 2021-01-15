@@ -27,19 +27,19 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget);
 
-    void actualizar_grafica(float v_lim);
+    void actualizar_grafica();
     elemento *getEsf();
 
-    float posx = 50;
-    float posy = 300;
-    float r = 20;
-    float mass = 50;
-    float velx = 0;
-    float vely = 0;
-    float K = 0.1;
-    float e = 0.2;
-    float ancho = 44;
-    float alto = 40;
+    float posx = 50; //Posicion en X
+    float posy = 300;  //Posicion en Y
+    float r = 20; //Radio de la imagen
+    float mass = 50; //Masa del personaje
+    float velx = 0; //Velocidad en X
+    float vely = 0; //Velocidad en Y
+    float K = 0.1; //Resistencias con el aire
+    float e = 0.4; //Rebote
+    float ancho = 44; //Ancho de la figura
+    float alto = 40; // Alto de la figura
 
 
 public slots:

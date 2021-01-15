@@ -30,10 +30,10 @@ void grafica::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawPixmap(-esf->getAncho()/2,-esf->getAlto()/2,*pixmap,columnas,filas,esf->getAncho(),esf->getAlto());
 }
 
-void grafica::actualizar_grafica(float v_lim)
+void grafica::actualizar_grafica()
 {
     esf->actualizar_elemento();
-    setPos(esf->getPX(),v_lim-esf->getPY());
+    setPos(esf->getPX(),720-esf->getPY());
 }
 
 elemento *grafica::getEsf()

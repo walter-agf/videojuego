@@ -31,9 +31,6 @@ private:
 
     QTimer *timer;
     QGraphicsScene *scene;
-    float dt;
-    int h_limit;
-    int v_limit;
 
     void borderCollision(elemento *b);
     void keyPressEvent(QKeyEvent *event);

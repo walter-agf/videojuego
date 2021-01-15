@@ -1,20 +1,18 @@
 #include "muros.h"
 
-muros::muros(int w_, int h_, int x, int y)
+muros::muros(int w_, int h_)
 {
     w = w_;
     h = h_;
-    posx = x;
-    posy = y;
 }
 
 QRectF muros::boundingRect() const
 {
-    return QRectF(w, h,posx,posy);
+    return QRectF(w, h,40,40);
 }
 
 void muros::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->setBrush(Qt::darkBlue);
+    painter->setBrush(Qt::yellow);
     painter->drawRect(boundingRect());
 }

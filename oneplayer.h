@@ -5,6 +5,11 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+
+#include <fstream>
+#include <string>
+using namespace std;
+
 #include "elemento.h"
 #include "grafica.h"
 #include "muros.h"
@@ -22,9 +27,14 @@ public:
     explicit oneplayer(QWidget *parent = nullptr);
     ~oneplayer();
 
-    QList<muros *> contras;
+    bool avanzar;
+    string dato;
+    int valor;
 
-    QList<QString *> ubicaciones;
+
+    bool nivel1();
+
+    QList<muros *> contras;
 
 public slots:
     void actualizar();
@@ -37,9 +47,6 @@ private:
 
     QTimer *timer;
     QGraphicsScene *scene;
-    float dt;
-    int h_limit;
-    int v_limit;
 
     void borderCollision(elemento *b);
     void keyPressEvent(QKeyEvent *event);

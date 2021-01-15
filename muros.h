@@ -3,7 +3,6 @@
 
 #include <QGraphicsItem>
 #include <QPainter>
-#include <QString>
 
 
 class muros: public QGraphicsItem
@@ -13,7 +12,7 @@ class muros: public QGraphicsItem
     int posx, posy;
 
 public:
-    muros(int w_, int h_, int x, int y);
+    muros(int w_, int h_);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

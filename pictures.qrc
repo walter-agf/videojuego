@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>pictures/caballero.png</file>
         <file>pictures/Minotaur_-_Sprite_Sheet.png</file>
-        <file>pictures/painting-3995999_1280.jpg</file>
         <file>pictures/jugador.png</file>
         <file>pictures/jugadores.png</file>
         <file>pictures/tablero-de-puntuacion.png</file>
@@ -11,11 +10,12 @@
         <file>niveles/nivel_1/2_1.txt</file>
         <file>niveles/nivel_1/3_1.txt</file>
         <file>niveles/nivel_1/4_1.txt</file>
-        <file>sonidos/Spring Village.ogg</file>
         <file>pictures/nivel_1.png</file>
         <file>pictures/personaje_1_1.png</file>
         <file>pictures/fondo.png</file>
-        <file>sonidos/Lyonesse.ogg</file>
-        <file>sonidos/Shinrin-Yoku.ogg</file>
+        <file>pictures/nivel_2.png</file>
+        <file>pictures/nivel_3.png</file>
+        <file>sonidos/Shinrin-Yoku.mp3</file>
+        <file>sonidos/Spring_Village.mp3</file>
     </qresource>
 </RCC>
