@@ -27,6 +27,9 @@ public:
 
     void actualizar_elemento();
 
+    float getV() const;
+    float getAX() const;
+    float getAY() const;
     float getPX() const;
     float getPY() const;
     float getMass() const;

@@ -7,12 +7,17 @@
 
 class muros: public QGraphicsItem
 {
+public:
 
     int w,h;
     int posx, posy;
 
-public:
-    muros(int w_, int h_);
+    muros(int posx_, int posy_, int w_, int h_);
+
+    int getw();
+    int geth();
+    int getposx();
+    int getposy();
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

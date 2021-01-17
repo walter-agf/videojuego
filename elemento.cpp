@@ -48,6 +48,21 @@ void elemento::actualizar_elemento()
     VY = VY + AY*dt;
 }
 
+float elemento::getV() const
+{
+    return V;
+}
+
+float elemento::getAX() const
+{
+    return AX;
+}
+
+float elemento::getAY() const
+{
+    return AY;
+}
+
 
 float elemento::getPY() const
 {

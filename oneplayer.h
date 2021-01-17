@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 
+#include <math.h>
 #include <fstream>
 #include <string>
 using namespace std;
@@ -27,12 +28,11 @@ public:
     explicit oneplayer(QWidget *parent = nullptr);
     ~oneplayer();
 
-    bool avanzar;
-    string dato;
-    int valor;
+    string dato, x_pix, y_pix, x_tam, y_tam;
+    int numero_x,numero_y, largo;
+    int cantidad_x, cantidad_y;
 
-
-    bool nivel1();
+    void nivel1();
 
     QList<muros *> contras;
 

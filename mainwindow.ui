@@ -74,7 +74,7 @@
      <string>Unico Jugador</string>
     </property>
     <property name="icon">
-     <iconset resource="pictures.qrc">
+     <iconset>
       <normaloff>:/pictures/jugador.png</normaloff>:/pictures/jugador.png</iconset>
     </property>
     <property name="iconSize">
@@ -82,6 +82,9 @@
       <width>24</width>
       <height>24</height>
      </size>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -105,7 +108,7 @@
      <string>Multijugador</string>
     </property>
     <property name="icon">
-     <iconset resource="pictures.qrc">
+     <iconset>
       <normaloff>:/pictures/jugadores.png</normaloff>:/pictures/jugadores.png</iconset>
     </property>
     <property name="iconSize">
@@ -136,7 +139,7 @@
      <string>Puntuacion</string>
     </property>
     <property name="icon">
-     <iconset resource="pictures.qrc">
+     <iconset>
       <normaloff>:/pictures/tablero-de-puntuacion.png</normaloff>:/pictures/tablero-de-puntuacion.png</iconset>
     </property>
     <property name="iconSize">
@@ -167,7 +170,7 @@
      <string>Salir</string>
     </property>
     <property name="icon">
-     <iconset resource="pictures.qrc">
+     <iconset>
       <normaloff>:/pictures/cancel.png</normaloff>:/pictures/cancel.png</iconset>
     </property>
     <property name="iconSize">
@@ -202,8 +205,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="pictures.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
