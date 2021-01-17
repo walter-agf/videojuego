@@ -22,7 +22,7 @@ oneplayer::oneplayer(QWidget *parent) :
     scene->addItem(bars.back());
 
 
-    nivel1();
+    nivel1("1");
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
@@ -33,9 +33,9 @@ oneplayer::~oneplayer()
     delete ui;
 }
 
-void oneplayer::nivel1()
+void oneplayer::nivel1(string num)
 {
-    dato = "../videojuego/niveles/1.txt";
+    dato = "../videojuego/niveles/"+num+".txt";
     fstream archivo_nivel (dato.c_str(), fstream :: in);
 
     while (!archivo_nivel.eof()){
@@ -119,55 +119,28 @@ void oneplayer::actualizar()
 
         for (int a = 0;a < contras.size();a++) {
 
+            if (bars[i]->collidesWithItem(contras[a])){
 
-            if (bars.at(i)->collidesWithItem(contras[a]) && b->getPY() < contras[a]->getposy()){
+                //PISO
+                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() && b->getPX() < contras[a]->getposx() + contras[a]->getw()){
+                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.0225);
+                }
 
-                b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.0224);
+                //DERECHA
+                if (b->getPX()+b->getR() <= contras[a]->getposx()){
+                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
+                }
 
+                //IZQUIERDA
+                if (b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
+                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
+                }
+
+                //CIELO
+                if (720 - b->getPY() > contras[a]->getposy() + contras[a]->geth()){
+                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY());
+                }
             }
-
-            else if (bars.at(i)->collidesWithItem(contras[a]) && b->getPY() - b->getR() >= contras[a]->getposy() + contras[a]->geth()){
-
-                b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()-0.6);
-
-            }
-
-            else if (bars.at(i)->collidesWithItem(contras[a]) && b->getPX() > contras[a]->getposx() + contras[a]->getw()){
-
-                b->set_vel(-1*b->getVX(),b->getVY(),b->getPX()+0.0224,b->getPY());
-
-            }
-
-            else if (bars.at(i)->collidesWithItem(contras[a]) && b->getPX() < contras[a]->getposy()){
-
-                b->set_vel(-1*b->getVX(),b->getVY(),b->getPX()+0.0224,b->getPY());
-
-            }
-
-
-
-
-
-//                if (b->getVY() <= 0){b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.0224);}
-
-//                else if (b->getVY() > 0 && b->getV() >= 0){b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()-0.0224);}
-
-
-
-                //if (b->getVY() > 0){b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),720-b->getR());}
-
-//                if(b->getPX()<b->getR()){
-//                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
-//                }
-//                if(b->getPX()>1280-b->getR()){
-//                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),1280-b->getR(),b->getPY());
-//                }
-//                if(b->getPY()<b->getR()){
-//                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getR());
-//                }
-//                if(b->getPY()>720-b->getR()){
-//                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),720-b->getR());
-//                }
         }
     }
 }
@@ -199,23 +172,48 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         b->set_vel(12,b->getVY(),b->getPX(),b->getPY());
 
+        for (int a = 0;a < contras.size();a++) {
 
+            if (bars[0]->collidesWithItem(contras[a]) && b->getPX() + b->getR() <= contras[a]->getposx()){
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX()-0.1,b->getPY()+0.0171);
+            }
+        }
     }
     else if(event->key() == Qt::Key_A){
 
         bars.at(0)->moment = 3;
-        bars.at(0)->K = 0.1;
 
         b->set_vel(-12,b->getVY(),b->getPX(),b->getPY());
+
+        for (int a = 0;a < contras.size();a++) {
+
+            if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX()+0.1,b->getPY()+0.0171);
+            }
+        }
 
 
     }
     else if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
 
-        if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) bars.at(0)->moment = 4;
-        else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) bars.at(0)->moment = 5;
+        if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
+            bars.at(0)->moment = 4;
+            b->set_vel(b->getVX()+ 6 ,60,b->getPX(),b->getPY());
+        }
+        else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) {
+            bars.at(0)->moment = 5;
+            b->set_vel(b->getVX()- 6 ,60,b->getPX(),b->getPY());
+        }
 
-        b->set_vel(b->getVX(),60,b->getPX(),b->getPY());
+
+
+        for (int a = 0;a < contras.size();a++) {
+
+            if (bars[0]->collidesWithItem(contras[a]) && 720 - b->getPY() > contras[a]->getposy() + contras[a]->geth()){
+                b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY());
+            }
+        }
+
     }
 }
 

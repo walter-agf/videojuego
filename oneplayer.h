@@ -32,7 +32,7 @@ public:
     int numero_x,numero_y, largo;
     int cantidad_x, cantidad_y;
 
-    void nivel1();
+    void nivel1(string num);
 
     QList<muros *> contras;
 
