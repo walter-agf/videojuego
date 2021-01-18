@@ -10,10 +10,12 @@ oneplayer::oneplayer(QWidget *parent) :
     timer = new QTimer(this);
     timer->start(6);
 
+    h_limit = 720;
+    w_limit = 0;
+    num = "1";
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(0,0,1280,720);
-    scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));
+    scene->setSceneRect(w_limit,0,1280,720);
     ui->graphicsView->setScene(scene);
 
     //EN MODO JUGADOR UNICO
@@ -22,7 +24,7 @@ oneplayer::oneplayer(QWidget *parent) :
     scene->addItem(bars.back());
 
 
-    nivel1("1");
+    nivel(num);
 
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
@@ -33,10 +35,16 @@ oneplayer::~oneplayer()
     delete ui;
 }
 
-void oneplayer::nivel1(string num)
+void oneplayer::nivel(string num_)
 {
-    dato = "../videojuego/niveles/"+num+".txt";
+    dato = "../videojuego/niveles/"+num_+".txt";
     fstream archivo_nivel (dato.c_str(), fstream :: in);
+
+    contras.clear();
+
+    if (num_ == "1"){scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));}
+    else if (num_ == "2"){scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));}
+    else if (num_ == "3"){scene->setBackgroundBrush(QPixmap(":/pictures/nivel_3.png"));}
 
     while (!archivo_nivel.eof()){
 
@@ -108,22 +116,18 @@ void oneplayer::nivel1(string num)
 
 void oneplayer::actualizar()
 {   
-
     for (int i = 0;i< bars.size() ;i++ ) {
-
         elemento *b = bars.at(i)->getEsf();
-
         bars.at(i)->actualizar_grafica();
         borderCollision(b);
-
-
         for (int a = 0;a < contras.size();a++) {
+
 
             if (bars[i]->collidesWithItem(contras[a])){
 
                 //PISO
                 if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() && b->getPX() < contras[a]->getposx() + contras[a]->getw()){
-                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.0225);
+                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.03);
                 }
 
                 //DERECHA
@@ -132,17 +136,37 @@ void oneplayer::actualizar()
                 }
 
                 //IZQUIERDA
-                if (b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
+                else if (b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
 
                 //CIELO
                 if (720 - b->getPY() > contras[a]->getposy() + contras[a]->geth()){
-                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY());
+                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()-0.3);
                 }
             }
         }
+
+        if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){
+            w_limit += 1280;
+            b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
+            scene->setSceneRect(w_limit,0,1280,720);
+        }
+        else if (b->getPX() - 22 < w_limit && b->getPX() > 200){
+            w_limit -= 1280;
+            b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
+            scene->setSceneRect(w_limit,0,1280,720);
+        }
+        else if (b->getPX() + 22 > 5070){
+            if (num == "1"){num = "2";}
+            else if (num == "2"){num = "3";}
+            w_limit = 0;
+            scene->setSceneRect(w_limit,0,1280,720);
+            b->set_vel(0,0,50,300);
+            nivel(num);
+        }
     }
+
 }
 
 void oneplayer::borderCollision(elemento *b)
@@ -150,14 +174,14 @@ void oneplayer::borderCollision(elemento *b)
     if(b->getPX()<b->getR()){
         b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getR(),b->getPY());
     }
-    if(b->getPX()>1280-b->getR()){
-        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),1280-b->getR(),b->getPY());
+    if(b->getPX()>5120-b->getR()){
+        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),5120-b->getR(),b->getPY());
     }
     if(b->getPY()<b->getR()){
         b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getR());
     }
-    if(b->getPY()>720-b->getR()){
-        b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),720-b->getR());
+    if(b->getPY()>h_limit-b->getR()){
+        b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),h_limit-b->getR());
     }
 }
 
@@ -170,7 +194,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         bars.at(0)->moment = 2;
 
-        b->set_vel(12,b->getVY(),b->getPX(),b->getPY());
+        b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
 
         for (int a = 0;a < contras.size();a++) {
 
@@ -183,7 +207,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         bars.at(0)->moment = 3;
 
-        b->set_vel(-12,b->getVY(),b->getPX(),b->getPY());
+        b->set_vel(-10,b->getVY(),b->getPX(),b->getPY());
 
         for (int a = 0;a < contras.size();a++) {
 
@@ -198,11 +222,11 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
             bars.at(0)->moment = 4;
-            b->set_vel(b->getVX()+ 6 ,60,b->getPX(),b->getPY());
+            b->set_vel(b->getVX()+10 ,70,b->getPX(),b->getPY());
         }
         else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) {
             bars.at(0)->moment = 5;
-            b->set_vel(b->getVX()- 6 ,60,b->getPX(),b->getPY());
+            b->set_vel(b->getVX()-10 ,70,b->getPX(),b->getPY());
         }
 
 

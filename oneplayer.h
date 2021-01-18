@@ -28,11 +28,13 @@ public:
     explicit oneplayer(QWidget *parent = nullptr);
     ~oneplayer();
 
-    string dato, x_pix, y_pix, x_tam, y_tam;
+    int h_limit,w_limit;
+
+    string dato, x_pix, y_pix, x_tam, y_tam,num;
     int numero_x,numero_y, largo;
     int cantidad_x, cantidad_y;
 
-    void nivel1(string num);
+    void nivel(string num_);
 
     QList<muros *> contras;
 

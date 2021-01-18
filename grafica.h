@@ -36,8 +36,8 @@ public:
     float mass = 50; //Masa del personaje
     float velx = 0; //Velocidad en X
     float vely = 0; //Velocidad en Y
-    float K = 0.1; //Resistencias con el aire
-    float e = 0.4; //Rebote
+    float K = 0.5; //Resistencias con el aire
+    float e = 0.5; //Rebote
     float ancho = 44; //Ancho de la figura
     float alto = 40; // Alto de la figura
 
