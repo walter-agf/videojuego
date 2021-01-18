@@ -13,5 +13,8 @@
         <file>pictures/nivel_3.png</file>
         <file>sonidos/Shinrin-Yoku.mp3</file>
         <file>sonidos/Spring_Village.mp3</file>
+        <file>niveles/1.txt</file>
+        <file>niveles/2.txt</file>
+        <file>niveles/3.txt</file>
     </qresource>
 </RCC>

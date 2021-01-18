@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QMessageBox>
 
 #include <math.h>
 #include <fstream>
