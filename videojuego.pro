@@ -15,6 +15,7 @@ SOURCES += \
     inicio.cpp \
     main.cpp \
     mainwindow.cpp \
+    minotauro.cpp \
     multiplayer.cpp \
     muros.cpp \
     niveles.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     grafica.h \
     inicio.h \
     mainwindow.h \
+    minotauro.h \
     multiplayer.h \
     muros.h \
     niveles.h \
