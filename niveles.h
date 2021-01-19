@@ -1,29 +1,12 @@
-#ifndef NIVELES_H
+﻿#ifndef NIVELES_H
 #define NIVELES_H
 
-#include <QMainWindow>
-#include <QTimer>
-#include <QGraphicsScene>
-#include <QKeyEvent>
-#include "elemento.h"
-#include "grafica.h"
-#include "muros.h"
+#include <QGraphicsItem>
+#include <vector>
+using namespace std;
 
-class niveles : public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    explicit niveles(QWidget *parent = nullptr);
-    ~niveles();
-
-    bool avanzar;
-
-    QList<muros *> contras;
-
-private:
-    QGraphicsScene *scene;
-    QList<grafica *> bars;
-};
+vector <string> uno();
+vector <string> dos();
+vector <string> tres();
 
 #endif // NIVELES_H

@@ -11,11 +11,13 @@
 #include <math.h>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 
 #include "elemento.h"
 #include "grafica.h"
 #include "muros.h"
+#include "niveles.h"
 
 
 namespace Ui {
@@ -38,7 +40,7 @@ public:
 
     void nivel(string num_);
 
-    QList<muros *> contras;
+    QList<muros*> contras;
 
 public slots:
     void actualizar();
@@ -55,7 +57,7 @@ private:
     void borderCollision(elemento *b);
     void keyPressEvent(QKeyEvent *event);
 
-    QList<grafica *> bars;
+    QList<grafica*> bars;
 };
 
 #endif // ONEPLAYER_H

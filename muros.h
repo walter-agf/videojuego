@@ -4,7 +4,6 @@
 #include <QGraphicsItem>
 #include <QPainter>
 
-
 class muros: public QGraphicsItem
 {
 public:

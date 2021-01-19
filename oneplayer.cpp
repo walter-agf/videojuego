@@ -22,10 +22,7 @@ oneplayer::oneplayer(QWidget *parent) :
     bars.push_back(new grafica);
     bars.back()->actualizar_grafica();
     scene->addItem(bars.back());
-
-
     nivel(num);
-
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
 }
@@ -37,104 +34,74 @@ oneplayer::~oneplayer()
 
 void oneplayer::nivel(string num_)
 {   
-    dato = "../videojuego/niveles/"+num_+".txt";
-    fstream doc (dato.c_str(), fstream :: in);
-    if (doc.fail()){
-        dato = "../videojuego-main/niveles/"+num_+".txt";
-    }
-    fstream archivo_nivel (dato.c_str(), fstream :: in);
-    doc.close();
-
+    vector<string> estacion;
     contras.clear();
 
-    if (num_ == "1"){scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));}
-    else if (num_ == "2"){scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));}
-    else if (num_ == "3"){scene->setBackgroundBrush(QPixmap(":/pictures/nivel_3.png"));}
+    if (num_ == "1"){
+        scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));
+        estacion = uno();
+    }
+    else if (num_ == "2"){
+        scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));
+        estacion = dos();
+    }
+    else if (num_ == "3"){
+        scene->setBackgroundBrush(QPixmap(":/pictures/nivel_3.png"));
+        estacion = tres();
+    }
 
-    if (!archivo_nivel.fail()){
+    for (int i = 0; i < estacion.size(); i++){
 
-        while (!archivo_nivel.eof()){
+        //Averigua Dato de posicion en x
+        x_pix = estacion[i].substr(0,estacion[i].find(' '));
+        estacion[i] = estacion[i].substr(estacion[i].find(' ')+1,estacion[i].find('S'));
 
-            dato = "";
+        //Averigua dato de posicion en y
+        y_pix = estacion[i].substr(0,estacion[i].find(' '));
+        estacion[i] = estacion[i].substr(estacion[i].find(' ')+1,estacion[i].find('S'));
 
-            while (dato.back() != '\n' && !archivo_nivel.eof()){
-                dato.push_back(archivo_nivel.get());
-            }
+        //Averigua dato de tamaño en x
 
-            //Averigua Dato de posicion en x
-            x_pix = dato.substr(0,dato.find(' '));
+        x_tam = estacion[i].substr(0,estacion[i].find(' '));
+        estacion[i] = estacion[i].substr(estacion[i].find(' ')+1,estacion[i].find('S'));
 
-            dato = dato.substr(dato.find(' ')+1,dato.find('\n'));
+        //A-verigua dato de tamaño en y
 
-            //Averigua dato de posicion en y
-            y_pix = dato.substr(0,dato.find(' '));
+        y_tam = estacion[i].substr(0,estacion[i].find('S'));
 
-            dato = dato.substr(dato.find(' ')+1,dato.find('\n'));
-
-            //Averigua dato de tamaño en x
-            x_tam = dato.substr(0,dato.find(' '));
-
-            dato = dato.substr(dato.find(' ')+1,dato.find('\n'));
-
-            //A-verigua dato de tamaño en y
-            y_tam = dato.substr(dato.find(' ')+1,dato.find('\n'));
-
-            //Elimina datos de ultimo valor por si puedan existir
-            y_tam = y_tam.substr(0,y_tam.find('\n'));
-
-            y_tam = y_tam.substr(0,y_tam.find(char(-1)));
-
-            //CONVERSOR A ENTERO
-            //Convierte a entero el valor de cadena de poscion en x
-            largo = x_pix.size();
-            numero_x = 0;
-            for(int i = 0; i<largo; i++){
-                numero_x += (int (x_pix[i])-48) * pow(10,largo - i -1);
-            }
-
-            //Convierte a entero el valor de cadena de poscion en y
-            largo = y_pix.size();
-            numero_y = 0;
-            for(int i = 0; i<largo; i++){
-                numero_y += (int (y_pix[i])-48) * pow(10,largo - i -1);
-            }
-
-            //Convierte a entero el valor de cadena de tamaño en x
-            largo = x_tam.size();
-            cantidad_x = 0;
-            for(int i = 0; i<largo; i++){
-                cantidad_x += (int (x_tam[i])-48) * pow(10,largo - i -1);
-            }
-
-            //Convierte a entero el valor de cadena de tamaño en y
-            largo = y_tam.size();
-            cantidad_y = 0;
-            for(int i = 0; i<largo; i++){
-                cantidad_y += (int (y_tam[i])-48) * pow(10,largo - i -1);
-            }
-
-            //Lo agrega a la scena
-            contras.push_back(new muros(numero_x, numero_y, cantidad_x, cantidad_y)); scene->addItem(contras.back());
-
+        //CONVERSOR A ENTERO
+        //Convierte a entero el valor de cadena de poscion en x
+        largo = x_pix.size();
+        numero_x = 0;
+        for(int i = 0; i<largo; i++){
+            numero_x += (int (x_pix[i])-48) * pow(10,largo - i -1);
         }
-        archivo_nivel.close();
+
+        //Convierte a entero el valor de cadena de poscion en y
+        largo = y_pix.size();
+        numero_y = 0;
+        for(int i = 0; i<largo; i++){
+            numero_y += (int (y_pix[i])-48) * pow(10,largo - i -1);
+        }
+
+        //Convierte a entero el valor de cadena de tamaño en x
+        largo = x_tam.size();
+        cantidad_x = 0;
+        for(int i = 0; i<largo; i++){
+            cantidad_x += (int (x_tam[i])-48) * pow(10,largo - i -1);
+        }
+
+        //Convierte a entero el valor de cadena de tamaño en y
+        largo = y_tam.size();
+        cantidad_y = 0;
+        for(int i = 0; i<largo; i++){
+            cantidad_y += (int (y_tam[i])-48) * pow(10,largo - i -1);
+        }
+
+        //Lo agrega a la scena
+        contras.push_back(new muros(numero_x, numero_y, cantidad_x, cantidad_y)); scene->addItem(contras.back());
+
     }
-
-    else {
-
-        QString val;
-
-        val = "";
-        val += "\n\nHa ocurrido un error  en la lectura  de los archivo  de nivel";
-        val += "\ncorrespondiente, proceda a verificar, si el nombre es incorrecto";
-        val += "\no la  ubicacion  esta mal  direccionada en la carpeta de trabajo";
-        val += "\nrecuerde que la carpeta de ejecucion debe llamarce:\n";
-        val += "\n . videojuego\n\n o en su defecto tambien puede llamarce:\n\n . videojuego-main\n\n";
-        QMessageBox::about (this,"ERROR" , val);
-
-    }
-
-
 }
 
 void oneplayer::actualizar()
@@ -190,8 +157,8 @@ void oneplayer::actualizar()
             else if  (num == "3"){
                 QString val;
                 val = "";
-                val += "\n\nHas Ganado\n\n";
-                QMessageBox::about (this," :D ", val);
+                val += "Felicitaciones :D\n\nHas Ganado";
+                QMessageBox::about (this,"ContraCruzada", val);
                 close();
             }
             w_limit = 0;

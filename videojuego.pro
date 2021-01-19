@@ -17,6 +17,7 @@ SOURCES += \
     mainwindow.cpp \
     multiplayer.cpp \
     muros.cpp \
+    niveles.cpp \
     oneplayer.cpp \
     score.cpp
 
@@ -27,6 +28,7 @@ HEADERS += \
     mainwindow.h \
     multiplayer.h \
     muros.h \
+    niveles.h \
     oneplayer.h \
     score.h
 
