@@ -35,6 +35,6 @@ QRectF muros::boundingRect() const
 
 void muros::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-//    painter->setBrush(Qt::yellow);
-//    painter->drawRect(boundingRect());
+    painter->setBrush(Qt::yellow);
+    painter->drawRect(boundingRect());
 }

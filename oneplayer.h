@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QFile>
 
 #include <math.h>
 #include <fstream>

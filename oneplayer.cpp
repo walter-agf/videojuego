@@ -36,7 +36,7 @@ oneplayer::~oneplayer()
 }
 
 void oneplayer::nivel(string num_)
-{
+{   
     dato = "../videojuego/niveles/"+num_+".txt";
     fstream doc (dato.c_str(), fstream :: in);
     if (doc.fail()){
@@ -125,9 +125,11 @@ void oneplayer::nivel(string num_)
         QString val;
 
         val = "";
-        val += "\n\nHa ocurrido un error en la lectura del archivo del nivel";
-        val += "\ncorresndiente, proceda a verificar, nombre incorrectos";
-        val += "\no ubicaciones mal direcionadas en la carpeta de trabajo\n\n";
+        val += "\n\nHa ocurrido un error  en la lectura  de los archivo  de nivel";
+        val += "\ncorrespondiente, proceda a verificar, si el nombre es incorrecto";
+        val += "\no la  ubicacion  esta mal  direccionada en la carpeta de trabajo";
+        val += "\nrecuerde que la carpeta de ejecucion debe llamarce:\n";
+        val += "\n . videojuego\n\n o en su defecto tambien puede llamarce:\n\n . videojuego-main\n\n";
         QMessageBox::about (this,"ERROR" , val);
 
     }
@@ -147,17 +149,17 @@ void oneplayer::actualizar()
             if (bars[i]->collidesWithItem(contras[a])){
 
                 //PISO
-                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() && b->getPX() < contras[a]->getposx() + contras[a]->getw()){
+                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() - 20 && b->getPX() < contras[a]->getposx() + contras[a]->getw() + 20){
                     b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.03);
                 }
 
                 //DERECHA
-                if (b->getPX()+b->getR() <= contras[a]->getposx()){
+                if (b->getPX()+b->getR() <= contras[a]->getposx() && b->getVX() > -1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
 
                 //IZQUIERDA
-                else if (b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
+                else if (b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
 
@@ -168,26 +170,36 @@ void oneplayer::actualizar()
             }
         }
 
+        //Cambios de pantalla o nivel
+        //Avanzar pantalla
         if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){
             w_limit += 1280;
             b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
             scene->setSceneRect(w_limit,0,1280,720);
         }
+        //Retroceder pantalla
         else if (b->getPX() - 22 < w_limit && b->getPX() > 200){
             w_limit -= 1280;
             b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
             scene->setSceneRect(w_limit,0,1280,720);
         }
+        //Cambio de nivel
         else if (b->getPX() + 22 > 5070){
             if (num == "1"){num = "2";}
             else if (num == "2"){num = "3";}
+            else if  (num == "3"){
+                QString val;
+                val = "";
+                val += "\n\nHas Ganado\n\n";
+                QMessageBox::about (this," :D ", val);
+                close();
+            }
             w_limit = 0;
             scene->setSceneRect(w_limit,0,1280,720);
             b->set_vel(0,0,50,300);
-            nivel(num);
+            nivel(num);  
         }
     }
-
 }
 
 void oneplayer::borderCollision(elemento *b)
@@ -215,12 +227,12 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         bars.at(0)->moment = 2;
 
-        b->set_vel(10,b->getVY(),b->getPX(),b->getPY());
+        b->set_vel(12,b->getVY(),b->getPX(),b->getPY());
 
         for (int a = 0;a < contras.size();a++) {
 
             if (bars[0]->collidesWithItem(contras[a]) && b->getPX() + b->getR() <= contras[a]->getposx()){
-                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX()-0.1,b->getPY()+0.0171);
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
             }
         }
     }
@@ -228,12 +240,12 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         bars.at(0)->moment = 3;
 
-        b->set_vel(-10,b->getVY(),b->getPX(),b->getPY());
+        b->set_vel(-12,b->getVY(),b->getPX(),b->getPY());
 
         for (int a = 0;a < contras.size();a++) {
 
             if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
-                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX()+0.1,b->getPY()+0.0171);
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
             }
         }
 
@@ -243,11 +255,14 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
             bars.at(0)->moment = 4;
-            b->set_vel(b->getVX()+10 ,70,b->getPX(),b->getPY());
+            if (b->getVX()<=1){b->set_vel(b->getVX(),64,b->getPX(),b->getPY());}
+            else {b->set_vel(b->getVX()+12 ,64,b->getPX(),b->getPY());}
+
         }
         else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) {
             bars.at(0)->moment = 5;
-            b->set_vel(b->getVX()-10 ,70,b->getPX(),b->getPY());
+            if (b->getVX()>=-1){b->set_vel(b->getVX(),64,b->getPX(),b->getPY());}
+            else {b->set_vel(b->getVX()-12 ,64,b->getPX(),b->getPY());}
         }
 
 
