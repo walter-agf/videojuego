@@ -24,14 +24,9 @@ oneplayer::oneplayer(QWidget *parent) :
     scene->addItem(bars.back());
     nivel(num);
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
-
 }
-
 oneplayer::~oneplayer()
-{
-    delete ui;
-}
-
+{  delete ui;}
 void oneplayer::nivel(string num_)
 {   
     vector<string> estacion;
@@ -116,23 +111,18 @@ void oneplayer::actualizar()
             if (bars[i]->collidesWithItem(contras[a])){
 
                 //PISO
-                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() - 20 && b->getPX() < contras[a]->getposx() + contras[a]->getw() + 20){
-                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.03);
+                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() && b->getPX() < contras[a]->getposx() + contras[a]->getw() && 730 - b->getPY() < contras[a]->getposy()){
+                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.047);
                 }
 
                 //DERECHA
-                if (b->getPX()+b->getR() <= contras[a]->getposx() && b->getVX() > -1){
+                if (b->getPX()+20 <= contras[a]->getposx() && b->getVX() > -1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
 
                 //IZQUIERDA
-                else if (b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
+                else if (b->getPX()-20 >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                }
-
-                //CIELO
-                if (720 - b->getPY() > contras[a]->getposy() + contras[a]->geth()){
-                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()-0.3);
                 }
             }
         }
@@ -232,19 +222,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
             else {b->set_vel(b->getVX()-12 ,64,b->getPX(),b->getPY());}
         }
 
-
-
-        for (int a = 0;a < contras.size();a++) {
-
-            if (bars[0]->collidesWithItem(contras[a]) && 720 - b->getPY() > contras[a]->getposy() + contras[a]->geth()){
-                b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY());
-            }
-        }
-
     }
 }
-
 void oneplayer::on_actionVolver_triggered()
-{
-    close();
-}
+{close();}
