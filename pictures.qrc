@@ -7,11 +7,12 @@
         <file>pictures/tablero-de-puntuacion.png</file>
         <file>pictures/cancel.png</file>
         <file>pictures/nivel_1.png</file>
-        <file>pictures/personaje_1_1.png</file>
         <file>pictures/fondo.png</file>
-        <file>pictures/nivel_2.png</file>
         <file>pictures/nivel_3.png</file>
         <file>sonidos/Shinrin-Yoku.mp3</file>
         <file>sonidos/Spring_Village.mp3</file>
+        <file>pictures/personaje_1.png</file>
+        <file>pictures/nivel_2.png</file>
+        <file>pictures/Mago-2.png</file>
     </qresource>
 </RCC>

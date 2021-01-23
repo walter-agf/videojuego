@@ -1,5 +1,6 @@
-#ifndef MINOTAURO_H
-#define MINOTAURO_H
+#ifndef MAGO_H
+#define MAGO_H
+
 
 #include <QObject>
 #include <QPixmap>
@@ -13,10 +14,10 @@
 
 #include "muros.h"
 
-class minotauro: public QObject, public QGraphicsItem
+class mago: public QObject, public QGraphicsItem
 {
 public:
-    explicit minotauro(QObject *parent = nullptr);
+    explicit mago(QObject *parent = nullptr);
 
     QTimer *timer;
     QPixmap *pixmap;
@@ -27,16 +28,16 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget);
 
-    void actualizar_minotauro();
+    void actualizar_mago();
 
     float posx = 0; //Posicion en X
     float posy = 0;  //Posicion en Y
-    float ancho = 96; //Ancho de la figura
-    float alto = 96; // Alto de la figura
+    float ancho = 40; //Ancho de la figura
+    float alto = 60; // Alto de la figura
 
 
 public slots:
-    void actualizacion_sprites_minotauro();
+    void actualizacion_sprites_mago();
 };
 
-#endif // MINOTAURO_H
+#endif // MAGO_H

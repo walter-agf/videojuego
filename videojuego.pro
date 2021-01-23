@@ -13,6 +13,7 @@ SOURCES += \
     elemento.cpp \
     grafica.cpp \
     inicio.cpp \
+    mago.cpp \
     main.cpp \
     mainwindow.cpp \
     minotauro.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     elemento.h \
     grafica.h \
     inicio.h \
+    mago.h \
     mainwindow.h \
     minotauro.h \
     multiplayer.h \

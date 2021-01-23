@@ -18,6 +18,8 @@ using namespace std;
 #include "grafica.h"
 #include "muros.h"
 #include "niveles.h"
+#include "mago.h"
+#include "minotauro.h"
 
 
 namespace Ui {
@@ -48,8 +50,13 @@ public slots:
 private slots:
     void on_actionVolver_triggered();
 
+    void on_actionReiniciar_triggered();
+
 private:
     Ui::oneplayer *ui;
+    oneplayer *one;
+    bool conti = true;
+    int enemigo = 0;
 
     QTimer *timer;
     QGraphicsScene *scene;
@@ -58,6 +65,8 @@ private:
     void keyPressEvent(QKeyEvent *event);
 
     QList<grafica*> bars;
+    QList<mago*> magos;
+    QList<minotauro*> tauros;
 };
 
 #endif // ONEPLAYER_H
