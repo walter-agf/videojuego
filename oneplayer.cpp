@@ -113,7 +113,7 @@ void oneplayer::nivel(string num_)
                     //Prueba agregar un minotauro
                     tauros.push_back(new minotauro);
                     tauros.back()->posx = (cantidad_x/2) + numero_x;
-                    tauros.back()->posy = numero_y-21;
+                    tauros.back()->posy = numero_y-18;
                     tauros.back()->actualizar_minotauro();
                     scene->addItem(tauros.back());
                     enemigo++;
@@ -155,9 +155,30 @@ void oneplayer::actualizar()
                 else if (b->getPX()-20 >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
+
+
+                //Enemigos__________________________________________________________________________________
+
+                for (int t = 0;t < tauros.size();t++){
+                    if (tauros[t]->collidesWithItem(contras[a])){
+                        if (b->getPX() < tauros[t]->posx){
+                            tauros[t]->moment = 3;
+                            tauros[t]->posx -= 0.8;
+                            tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
+                        }
+                        else if (b->getPX() > tauros[t]->posx){
+                            tauros[t]->moment = 2;
+                            tauros[t]->posx += 0.8;
+                            tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
+                        }
+                    }
+                }
+
+
+
+                //__________________________________________________________________________________________
             }
         }
-
         //Cambios de pantalla o nivel
         //Avanzar pantalla
         if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){

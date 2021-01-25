@@ -30,9 +30,37 @@ void minotauro::actualizar_minotauro()
 
 void minotauro::actualizacion_sprites_minotauro()
 {
-    columnas += 52;
-    if(columnas >= 260){
-        columnas =0;
+    if (moment == 0 ){
+        filas = 0;
+        columnas += 52;
+        if(columnas >= 260){
+            columnas =0;
+        }
     }
+    else if (moment == 1){
+        filas = 42;
+        columnas += 52;
+        if(columnas >= 260){
+            columnas =0;
+        }
+    }
+    else if (moment == 2){
+        filas = 84;
+        columnas += 52;
+        if(columnas >= 416){
+            columnas =0;
+        }
+    }
+    else if (moment == 3){
+        filas = 126;
+        columnas += 52;
+        if(columnas >= 416){
+            columnas =0;
+        }
+    }
+
+    if (moment == 3){moment = 1;}
+    if (moment == 2){moment = 0;}
+
     this->update(-ancho/2, -alto/2, ancho, alto);
 }
