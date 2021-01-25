@@ -6,7 +6,7 @@ minotauro::minotauro(QObject *parent) : QObject(parent)
     filas = 0;
     columnas = 0;
 
-    pixmap = new QPixmap(":/pictures/Minotaur_-_Sprite_Sheet.png");
+    pixmap = new QPixmap(":/pictures/minotauro.png");
 
     timer->start(120);
     connect(timer,&QTimer::timeout,this,&minotauro::actualizacion_sprites_minotauro);
@@ -30,8 +30,8 @@ void minotauro::actualizar_minotauro()
 
 void minotauro::actualizacion_sprites_minotauro()
 {
-    columnas += 96;
-    if(columnas >= 480){
+    columnas += 52;
+    if(columnas >= 260){
         columnas =0;
     }
     this->update(-ancho/2, -alto/2, ancho, alto);

@@ -103,7 +103,7 @@ vector<string> dos()
 
 vector<string> tres()
 {
-    vector<string> nivel_3 = {{"500 80 200 480S"},
+    vector<string> nivel_3 = {{"500 80 180 480S"},
                               {"460 120 40 40S"},
                               {"880 120 280 40S"},
                               {"40 160 80 40S"},

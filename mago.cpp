@@ -6,7 +6,7 @@ mago::mago(QObject *parent) : QObject(parent)
     filas = 0;
     columnas = 0;
 
-    pixmap = new QPixmap(":/pictures/Mago-2.png");
+    pixmap = new QPixmap(":/pictures/mago.png");
 
     timer->start(120);
     connect(timer,&QTimer::timeout,this,&mago::actualizacion_sprites_mago);
@@ -30,8 +30,8 @@ void mago::actualizar_mago()
 
 void mago::actualizacion_sprites_mago()
 {
-    columnas += 40;
-    if(columnas >= 320){
+    columnas += 32;
+    if(columnas >= 256){
         columnas =0;
     }
     this->update(-ancho/2, -alto/2, ancho, alto);

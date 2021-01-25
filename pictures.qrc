@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>pictures/caballero.png</file>
-        <file>pictures/Minotaur_-_Sprite_Sheet.png</file>
         <file>pictures/jugador.png</file>
         <file>pictures/jugadores.png</file>
         <file>pictures/tablero-de-puntuacion.png</file>
@@ -13,6 +12,7 @@
         <file>sonidos/Spring_Village.mp3</file>
         <file>pictures/personaje_1.png</file>
         <file>pictures/nivel_2.png</file>
-        <file>pictures/Mago-2.png</file>
+        <file>pictures/mago.png</file>
+        <file>pictures/minotauro.png</file>
     </qresource>
 </RCC>

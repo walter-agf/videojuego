@@ -56,7 +56,7 @@ private:
     Ui::oneplayer *ui;
     oneplayer *one;
     bool conti = true;
-    int enemigo = 0;
+    int enemigo = 1;
 
     QTimer *timer;
     QGraphicsScene *scene;

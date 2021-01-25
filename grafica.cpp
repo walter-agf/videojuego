@@ -150,8 +150,8 @@ void grafica::actualizacion_sprites()
         if (moment == 4)moment = 0;
         else if (moment == 5)moment = 1;
     }
-    if (esf->getVX() <= 3 && esf->getVX() >= -3){
+    if (esf->getVX() <= 3 && esf->getVX() >= -3 && esf->getVY() < 1 && esf->getVY() > 0){
         if (moment == 8)moment = 0;
-        else if (moment == 9)moment = 1;
+        else if (moment == 9)moment = 1 ;
     }
 }

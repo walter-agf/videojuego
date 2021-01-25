@@ -32,8 +32,8 @@ public:
 
     float posx = 0; //Posicion en X
     float posy = 0;  //Posicion en Y
-    float ancho = 40; //Ancho de la figura
-    float alto = 60; // Alto de la figura
+    float ancho = 32; //Ancho de la figura
+    float alto = 55; // Alto de la figura
 
 
 public slots:

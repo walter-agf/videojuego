@@ -8,7 +8,7 @@ oneplayer::oneplayer(QWidget *parent) :
     ui->setupUi(this);
 
     timer = new QTimer(this);
-    timer->start(6);
+    timer->start(7);
 
     h_limit = 720;
     w_limit = 0;
@@ -108,12 +108,12 @@ void oneplayer::nivel(string num_)
         //Lo agrega a la scena
         contras.push_back(new muros(numero_x, numero_y, cantidad_x, cantidad_y)); scene->addItem(contras.back());
 
-        if (cantidad_x >= 160){
-            if (enemigo == 0){enemigo++;}
-            else if (enemigo == 1 || enemigo == 2){
+        if (cantidad_x >= 200){
+            if (enemigo == 1 || enemigo == 2){
+                    //Prueba agregar un minotauro
                     tauros.push_back(new minotauro);
                     tauros.back()->posx = (cantidad_x/2) + numero_x;
-                    tauros.back()->posy = numero_y-16;
+                    tauros.back()->posy = numero_y-21;
                     tauros.back()->actualizar_minotauro();
                     scene->addItem(tauros.back());
                     enemigo++;
@@ -125,7 +125,7 @@ void oneplayer::nivel(string num_)
                     magos.back()->posy = numero_y-30;
                     magos.back()->actualizar_mago();
                     scene->addItem(magos.back());
-                    enemigo = 0;
+                    enemigo = 1;
                 }
         }
     }
@@ -142,7 +142,7 @@ void oneplayer::actualizar()
             if (bars[i]->collidesWithItem(contras[a])){
 
                 //PISO
-                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx() && b->getPX() < contras[a]->getposx() + contras[a]->getw() && 730 - b->getPY() < contras[a]->getposy()){
+                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx()-10 && b->getPX() < contras[a]->getposx() + contras[a]->getw()+10 && 730 - b->getPY()< contras[a]->getposy()){
                     b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.047);
                 }
 
@@ -259,72 +259,38 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
             if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
                 bars.at(0)->moment = 4;
-                if (b->getVX()<=1){b->set_vel(b->getVX(),64,b->getPX(),b->getPY());}
-                else {b->set_vel(b->getVX()+12 ,64,b->getPX(),b->getPY());}
+                if (b->getVX()<=1){b->set_vel(b->getVX(),70,b->getPX(),b->getPY());}
+                else {b->set_vel(b->getVX()+12 ,70,b->getPX(),b->getPY());}
 
             }
             else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) {
                 bars.at(0)->moment = 5;
-                if (b->getVX()>=-1){b->set_vel(b->getVX(),64,b->getPX(),b->getPY());}
-                else {b->set_vel(b->getVX()-12 ,64,b->getPX(),b->getPY());}
+                if (b->getVX()>=-1){b->set_vel(b->getVX(),70,b->getPX(),b->getPY());}
+                else {b->set_vel(b->getVX()-12 ,70,b->getPX(),b->getPY());}
             }
 
         }
         if (event->key() == Qt::Key_S){
-
             for (int a = 0;a < contras.size();a++) {
-
-                if (bars[0]->collidesWithItem(contras[a]) && b->getV() > 0){
-                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
+                if (bars[0]->collidesWithItem(contras[a]) && b->getPX() + 10 >= contras[a]->getposx() + contras[a]->getw()){
+                    b->set_vel(0,b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
             }
-
-            if (bars[0]->moment == 0){
+            if (bars[0]->moment == 4){
                 bars[0]->moment = 8;
-                b->set_vel(b->getVX() + 14,b->getVY(),b->getPX(),b->getPY());
-
-                for (int a = 0;a < contras.size();a++) {
-
-                    if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
-                        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                    }
-                }
-
+                b->set_vel(b->getVX(),b->getVY() - 16,b->getPX(),b->getPY());
             }
-            else if (bars[0]->moment == 1){
+            else if (bars[0]->moment == 5){
                 bars[0]->moment = 9;
-                b->set_vel(b->getVX() - 14,b->getVY(),b->getPX(),b->getPY());
-
-                for (int a = 0;a < contras.size();a++) {
-
-                    if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
-                        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                    }
-                }
+                b->set_vel(b->getVX(),b->getVY() - 16,b->getPX(),b->getPY());
             }
-
-            else if (bars[0]->moment == 2 ){
+            else if (bars[0]->moment == 2 && b->getVX() > 0){
                 bars[0]->moment = 8;
-                b->set_vel(b->getVX() + 28,b->getVY(),b->getPX(),b->getPY());
-
-                for (int a = 0;a < contras.size();a++) {
-
-                    if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
-                        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                    }
-                }
-
+                b->set_vel(b->getVX() + 16,b->getVY(),b->getPX(),b->getPY());
             }
-            else if (bars[0]->moment == 3 ){
+            else if (bars[0]->moment == 3 && b->getVX() < 0){
                 bars[0]->moment = 9;
-                b->set_vel(b->getVX() - 28,b->getVY(),b->getPX(),b->getPY());
-
-                for (int a = 0;a < contras.size();a++) {
-
-                    if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
-                        b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                    }
-                }
+                b->set_vel(b->getVX() - 16,b->getVY(),b->getPX(),b->getPY());
             }
         }
 
