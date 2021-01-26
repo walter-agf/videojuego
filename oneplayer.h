@@ -39,6 +39,9 @@ public:
     string dato, x_pix, y_pix, x_tam, y_tam,num;
     int numero_x,numero_y, largo;
     int cantidad_x, cantidad_y;
+    float distancia = 0;
+    int vida_one  = 100;
+    int estado = 0;
 
     void nivel(string num_);
 

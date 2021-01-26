@@ -12,7 +12,7 @@ oneplayer::oneplayer(QWidget *parent) :
 
     h_limit = 720;
     w_limit = 0;
-    num = "1"; //Selecciona el nivel a comenzar
+    num = "2"; //Selecciona el nivel a comenzar
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(w_limit,0,1280,720);
@@ -35,6 +35,8 @@ void oneplayer::nivel(string num_)
     if (num_ == "1"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));
         estacion = uno();
+        vida_one = 100;
+        ui->vida->setText(QString::number(vida_one));
     }
     else if (num_ == "2"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));
@@ -133,6 +135,11 @@ void oneplayer::nivel(string num_)
 
 void oneplayer::actualizar()
 {   
+    if ( estado != 0){
+        estado -= 1;
+    }
+
+
     for (int i = 0;i< bars.size() ;i++ ) {
         elemento *b = bars.at(i)->getEsf();
         bars.at(i)->actualizar_grafica();
@@ -171,6 +178,27 @@ void oneplayer::actualizar()
                             tauros[t]->posx += 0.8;
                             tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
                         }
+
+
+                        if (tauros[t]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){
+                            vida_one -= 20;
+                            ui->vida->setText(QString::number(vida_one));
+                            if (b->getPX() < tauros[t]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
+                            else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
+                            estado = 300;
+                        }
+                    }
+                }
+
+                for (int m = 0;m < magos.size();m++){
+
+                    distancia = pow(b->getPX() - magos[m]->posx,2);
+                    distancia += pow((720 - b->getPY()) - magos[m]->posy,2);
+                    distancia = pow (distancia,0.5);
+
+                    if (distancia < magos[m]->rango){
+                        magos[m]->posx -= 1;
+                        magos[m]->setPos(magos[m]->posx,magos[m]->posy);
                     }
                 }
 
@@ -188,9 +216,14 @@ void oneplayer::actualizar()
         }
         //Retroceder pantalla
         else if (b->getPX() - 22 < w_limit && b->getPX() > 200){
-            w_limit -= 1280;
-            b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
-            scene->setSceneRect(w_limit,0,1280,720);
+            if (b->getPX() -22 > 3800){
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX() + 10,b->getPY());
+            }
+            else{
+                w_limit -= 1280;
+                b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
+                scene->setSceneRect(w_limit,0,1280,720);
+            }
         }
         //Cambio de nivel
         else if (b->getPX() + 22 > 5070){
@@ -213,13 +246,19 @@ void oneplayer::actualizar()
             else {bars[i]->moment = 7;}
             b->set_vel(0,0,b->getPX(),b->getPY());
         }
-        else if (bars[i]->moment == 6 || bars[i]->moment == 7){
+        else if (vida_one == 0){
+            if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
+            else {bars[i]->moment = 7;}
+            b->set_vel(0,0,b->getPX(),b->getPY());
+        }
+        if (bars[i]->moment == 6 || bars[i]->moment == 7){
             if (bars[i]->columnas == 396){
                 QString val;
                 val = "";
                 val += "Jugador 1 Elimindo :_(\n\nDerrotado";
                 QMessageBox::about (this,"ContraCruzada", val);
                 conti = false;
+                bars[i]->moment = 10;
                 bars[i]->columnas = 440;
             }
         }

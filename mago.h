@@ -34,6 +34,7 @@ public:
     float posy = 0;  //Posicion en Y
     float ancho = 32; //Ancho de la figura
     float alto = 55; // Alto de la figura
+    float rango = 300; //rango de ataque
 
 
 public slots:
