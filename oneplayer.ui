@@ -61,7 +61,8 @@
      <font>
       <family>Verdana</family>
       <pointsize>18</pointsize>
-      <weight>50</weight>
+      <weight>9</weight>
+      <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
@@ -69,7 +70,8 @@
      <bool>true</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">font: 75 18pt 'Verdana';
+color: rgb(0, 255, 0);</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600; color:#00ff00;&quot;&gt;PUNTAJE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

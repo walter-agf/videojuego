@@ -37,6 +37,7 @@ void oneplayer::nivel(string num_)
         estacion = uno();
         vida_one = 100;
         ui->vida->setText(QString::number(vida_one));
+        ui->vida->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(0, 255, 0);");
     }
     else if (num_ == "2"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));
@@ -181,7 +182,7 @@ void oneplayer::actualizar()
 
 
                         if (tauros[t]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){
-                            vida_one -= 20;
+                            vida_one -= 4;
                             ui->vida->setText(QString::number(vida_one));
                             if (b->getPX() < tauros[t]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
                             else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
@@ -201,9 +202,6 @@ void oneplayer::actualizar()
                         magos[m]->setPos(magos[m]->posx,magos[m]->posy);
                     }
                 }
-
-
-
                 //__________________________________________________________________________________________
             }
         }
@@ -245,6 +243,7 @@ void oneplayer::actualizar()
             if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
             else {bars[i]->moment = 7;}
             b->set_vel(0,0,b->getPX(),b->getPY());
+            vida_one = 0;
         }
         else if (vida_one == 0){
             if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
@@ -252,7 +251,7 @@ void oneplayer::actualizar()
             b->set_vel(0,0,b->getPX(),b->getPY());
         }
         if (bars[i]->moment == 6 || bars[i]->moment == 7){
-            if (bars[i]->columnas == 396){
+            if (bars[i]->columnas == 396 && vida_one == 0){
                 QString val;
                 val = "";
                 val += "Jugador 1 Elimindo :_(\n\nDerrotado";
