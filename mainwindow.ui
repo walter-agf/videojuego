@@ -70,11 +70,15 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(103, 68, 42);
+background-color: rgb(255, 220, 44);</string>
+    </property>
     <property name="text">
      <string>Unico Jugador</string>
     </property>
     <property name="icon">
-     <iconset>
+     <iconset resource="pictures.qrc">
       <normaloff>:/pictures/jugador.png</normaloff>:/pictures/jugador.png</iconset>
     </property>
     <property name="iconSize">
@@ -104,11 +108,15 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(103, 68, 42);
+background-color: rgb(255, 220, 44);</string>
+    </property>
     <property name="text">
      <string>Multijugador</string>
     </property>
     <property name="icon">
-     <iconset>
+     <iconset resource="pictures.qrc">
       <normaloff>:/pictures/jugadores.png</normaloff>:/pictures/jugadores.png</iconset>
     </property>
     <property name="iconSize">
@@ -135,11 +143,15 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(103, 68, 42);
+background-color: rgb(255, 220, 44);</string>
+    </property>
     <property name="text">
      <string>Puntuacion</string>
     </property>
     <property name="icon">
-     <iconset>
+     <iconset resource="pictures.qrc">
       <normaloff>:/pictures/tablero-de-puntuacion.png</normaloff>:/pictures/tablero-de-puntuacion.png</iconset>
     </property>
     <property name="iconSize">
@@ -166,17 +178,59 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(103, 68, 42);
+background-color: rgb(255, 220, 44);</string>
+    </property>
     <property name="text">
      <string>Salir</string>
     </property>
     <property name="icon">
-     <iconset>
+     <iconset resource="pictures.qrc">
       <normaloff>:/pictures/cancel.png</normaloff>:/pictures/cancel.png</iconset>
     </property>
     <property name="iconSize">
      <size>
       <width>24</width>
       <height>24</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>1100</x>
+      <y>600</y>
+      <width>60</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(103, 68, 42);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="pictures.qrc">
+      <normaloff>:/pictures/mute.png</normaloff>:/pictures/mute.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
      </size>
     </property>
    </widget>
@@ -205,6 +259,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="pictures.qrc"/>
+ </resources>
  <connections/>
 </ui>

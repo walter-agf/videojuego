@@ -14,5 +14,6 @@
         <file>pictures/nivel_2.png</file>
         <file>pictures/mago.png</file>
         <file>pictures/minotauro.png</file>
+        <file>pictures/mute.png</file>
     </qresource>
 </RCC>
