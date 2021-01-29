@@ -12,7 +12,7 @@ oneplayer::oneplayer(QWidget *parent) :
 
     h_limit = 720;
     w_limit = 0;
-    num = "2"; //Selecciona el nivel a comenzar
+    num = "1"; //Selecciona el nivel a comenzar
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(w_limit,0,1280,720);
