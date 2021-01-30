@@ -13,6 +13,7 @@ SOURCES += \
     elemento.cpp \
     grafica.cpp \
     inicio.cpp \
+    jefe_uno.cpp \
     mago.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     elemento.h \
     grafica.h \
     inicio.h \
+    jefe_uno.h \
     mago.h \
     mainwindow.h \
     minotauro.h \

@@ -38,6 +38,11 @@ void oneplayer::nivel(string num_)
         vida_one = 100;
         ui->vida->setText(QString::number(vida_one));
         ui->vida->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(0, 255, 0);");
+        jefe = new jefe_uno(this);
+        jefe->posx = 4960;
+        jefe->posy = 400;
+        jefe->actualizar_jefe_uno();
+        scene->addItem(jefe);
     }
     else if (num_ == "2"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));
@@ -48,6 +53,11 @@ void oneplayer::nivel(string num_)
         magos.clear();
         for (int i = 0; i < tauros.size(); i++){scene->removeItem(tauros[i]);}
         tauros.clear();
+        jefe = new jefe_uno(this);
+        jefe->posx = 4960;
+        jefe->posy = 400;
+        jefe->actualizar_jefe_uno();
+        scene->addItem(jefe);
     }
     else if (num_ == "3"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_3.png"));
@@ -58,6 +68,11 @@ void oneplayer::nivel(string num_)
         magos.clear();
         for (int i = 0; i < tauros.size(); i++){scene->removeItem(tauros[i]);}
         tauros.clear();
+        jefe = new jefe_uno(this);
+        jefe->posx = 4960;
+        jefe->posy = 480;
+        jefe->actualizar_jefe_uno();
+        scene->addItem(jefe);
     }
 
     for (int i = 0; i < estacion.size(); i++){
@@ -202,6 +217,16 @@ void oneplayer::actualizar()
                         magos[m]->setPos(magos[m]->posx,magos[m]->posy);
                     }
                 }
+
+                if (bars[i]->collidesWithItem(jefe)){
+                    if (estado == 0 && vida_one > 0){
+                        vida_one -= 10;
+                        if (vida_one < 0){vida_one=0;}
+                        ui->vida->setText(QString::number(vida_one));
+                        estado = 200;
+                    }
+                    b->set_vel(-30,b->getVY()+10,b->getPX()-20,b->getPY()+0.0171);
+                }
                 //__________________________________________________________________________________________
             }
         }
@@ -245,13 +270,13 @@ void oneplayer::actualizar()
             b->set_vel(0,0,b->getPX(),b->getPY());
             vida_one = 0;
         }
-        else if (vida_one == 0){
+        else if (vida_one <= 0){
             if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
             else {bars[i]->moment = 7;}
             b->set_vel(0,0,b->getPX(),b->getPY());
         }
         if (bars[i]->moment == 6 || bars[i]->moment == 7){
-            if (bars[i]->columnas == 396 && vida_one == 0){
+            if (bars[i]->columnas == 396 && vida_one <= 0){
                 QString val;
                 val = "";
                 val += "Jugador 1 Elimindo :_(\n\nDerrotado";

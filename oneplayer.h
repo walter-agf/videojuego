@@ -20,6 +20,7 @@ using namespace std;
 #include "niveles.h"
 #include "mago.h"
 #include "minotauro.h"
+#include "jefe_uno.h"
 
 
 namespace Ui {
@@ -69,6 +70,7 @@ private:
     void borderCollision(elemento *b);
     void keyPressEvent(QKeyEvent *event);
 
+    jefe_uno *jefe;
     QList<grafica*> bars;
     QList<mago*> magos;
     QList<minotauro*> tauros;

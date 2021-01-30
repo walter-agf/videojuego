@@ -1,5 +1,5 @@
-#ifndef MAGO_H
-#define MAGO_H
+#ifndef JEFE_UNO_H
+#define JEFE_UNO_H
 
 #include <QObject>
 #include <QPixmap>
@@ -11,10 +11,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-class mago: public QObject, public QGraphicsItem
+class jefe_uno: public QObject, public QGraphicsItem
 {
 public:
-    explicit mago(QObject *parent = nullptr);
+    explicit jefe_uno(QObject *parent = nullptr);
 
     QTimer *timer;
     QPixmap *pixmap;
@@ -25,17 +25,16 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget);
 
-    void actualizar_mago();
+    void actualizar_jefe_uno();
 
     float posx = 0; //Posicion en X
     float posy = 0;  //Posicion en Y
-    float ancho = 32; //Ancho de la figura
-    float alto = 55; // Alto de la figura
+    float ancho = 320; //Ancho de la figura
+    float alto = 320; // Alto de la figura
     float rango = 300; //rango de ataque
 
-
 public slots:
-    void actualizacion_sprites_mago();
+    void actualizacion_sprites_jefe_uno();
 };
 
-#endif // MAGO_H
+#endif // JEFE_UNO_H
