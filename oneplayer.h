@@ -55,6 +55,8 @@ private slots:
 
     void on_actionReiniciar_triggered();
 
+    void on_actionPausa_triggered();
+
 private:
     Ui::oneplayer *ui;
     oneplayer *one;

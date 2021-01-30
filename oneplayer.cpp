@@ -363,3 +363,14 @@ void oneplayer::on_actionReiniciar_triggered()
     one = new oneplayer(this);
     one->show();
 }
+
+void oneplayer::on_actionPausa_triggered()
+{
+    if (timer->isActive()){
+        timer->stop();
+    }
+    else {
+        timer->start(7);
+    }
+
+}
