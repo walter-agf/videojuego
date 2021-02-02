@@ -230,7 +230,7 @@ void multiplayer::keyPressEvent(QKeyEvent *event)
                 }
             }
         }
-        else if(event->key() == Qt::Key_A){
+        if(event->key() == Qt::Key_A){
 
             bars.at(0)->moment = 3;
 
@@ -245,7 +245,7 @@ void multiplayer::keyPressEvent(QKeyEvent *event)
 
 
         }
-        else if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
+        if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
 
             if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
                 bars.at(0)->moment = 4;

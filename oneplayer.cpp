@@ -12,7 +12,7 @@ oneplayer::oneplayer(QWidget *parent) :
 
     h_limit = 720;
     w_limit = 0;
-    num = "1"; //Selecciona el nivel a comenzar
+    num = "3"; //Selecciona el nivel a comenzar
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(w_limit,0,1280,720);
@@ -154,12 +154,64 @@ void oneplayer::actualizar()
     if ( estado != 0){
         estado -= 1;
     }
-
+    if ( con_cad != 0){
+        con_cad -= 1;
+    }
+    if ( est_mago != 0){
+        est_mago -= 1;
+    }
 
     for (int i = 0;i< bars.size() ;i++ ) {
         elemento *b = bars.at(i)->getEsf();
         bars.at(i)->actualizar_grafica();
         borderCollision(b);
+        //----------------Disparo___________
+
+        for (int o = 0; o < discab.size(); o++){
+            if (discab[o]->moment == 0 || discab[o]->moment == 2 || discab[o]->moment == 4 || discab[o]->moment == 8){discab[o]->posx += 2;}
+            else {discab[o]->posx -= 2;}
+            discab[o]->setPos(discab[o]->posx,discab[o]->posy);
+            eliminar = false;
+            discab[o]->rango -=2;
+            //Minotarua
+            for (int t = 0;t < tauros.size();t++){
+                if (tauros[t]->collidesWithItem(discab[o])){
+                    scene->removeItem(tauros[t]);
+                    tauros.removeAt(t);
+                    eliminar = true;
+                    break;
+                }
+            }
+            //Mago
+            for (int m = 0;m < magos.size() && eliminar != true;m++){
+                if (magos[m]->collidesWithItem(discab[o])){
+                    scene->removeItem(magos[m]);
+                    magos.removeAt(m);
+                    eliminar = true;
+                    break;
+                }
+            }
+            //Bala
+            for (int e = 0;e < dismag.size() && eliminar!= true;e++){
+                if (dismag[e]->collidesWithItem(discab[o])){
+                    scene->removeItem(dismag[e]);
+                    dismag.removeAt(e);
+                    eliminar = true;
+                    break;
+                }
+            }
+
+            if (eliminar == true){
+                scene->removeItem(discab[o]);
+                discab.removeAt(o);
+            }
+            else if (discab[o]->rango <= 0){
+                scene->removeItem(discab[o]);
+                discab.removeAt(o);
+            }
+        }
+
+        //__________________________________
         for (int a = 0;a < contras.size();a++) {
 
             if (bars[i]->collidesWithItem(contras[a])){
@@ -212,9 +264,22 @@ void oneplayer::actualizar()
                     distancia += pow((720 - b->getPY()) - magos[m]->posy,2);
                     distancia = pow (distancia,0.5);
 
-                    if (distancia < magos[m]->rango){
-                        magos[m]->posx -= 1;
-                        magos[m]->setPos(magos[m]->posx,magos[m]->posy);
+                    if (distancia < magos[m]->rango && estado == 0  && vida_one > 0){
+
+                        if (magos[m]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){
+                            vida_one -= 4;
+                            ui->vida->setText(QString::number(vida_one));
+                            if (b->getPX() < magos[m]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
+                            else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
+                        }
+                        estado = 200;
+                        //Prueba agregar un disparo_mago
+                        dismag.push_back(new disparo_m);
+                        dismag.back()->posx = magos[m]->posx;
+                        dismag.back()->posy = magos[m]->posy;
+                        dismag.back()->setPos(dismag.back()->posx,dismag.back()->posy);
+                        scene->addItem(dismag.back());
+                        est_mago = 1200;
                     }
                 }
 
@@ -289,6 +354,39 @@ void oneplayer::actualizar()
         if (conti == false){
             close();
         }
+        for (int e=0; e < dismag.size(); e++){
+
+            if (b->getPX() < dismag[e]->posx){
+                dismag[e]->posx -= 0.6;
+                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+            }
+            else if (b->getPX() > dismag[e]->posx){
+                dismag[e]->posx += 0.6;
+                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+            }
+
+
+            if (720 - b->getPY() < dismag[e]->posy){
+                dismag[e]->posy -= 0.6;
+                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+            }
+
+            else if (720 - b->getPY() > dismag[e]->posy){
+                dismag[e]->posy += 0.6;
+                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+            }
+
+            if (dismag[e]->collidesWithItem(bars[i])){
+                vida_one -= 6;
+                ui->vida->setText(QString::number(vida_one));
+                scene->removeItem(dismag[e]);
+                dismag.removeAt(e);
+            }
+            else if (est_mago <= 0){
+                scene->removeItem(dismag[0]);
+                dismag.removeAt(0);
+            }
+        }
     }
 }
 
@@ -324,7 +422,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
                 }
             }
         }
-        else if(event->key() == Qt::Key_A){
+        if(event->key() == Qt::Key_A){
 
             bars.at(0)->moment = 3;
 
@@ -339,7 +437,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
 
         }
-        else if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
+        if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
 
             if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
                 bars.at(0)->moment = 4;
@@ -376,6 +474,19 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
                 bars[0]->moment = 9;
                 b->set_vel(b->getVX() - 16,b->getVY(),b->getPX(),b->getPY());
             }
+        }
+
+        //_____________Disparo____________________________________________
+
+        if(event->key() == Qt::Key_E && con_cad == 0){
+            //Prueba agregar un disparo_mago
+            discab.push_back(new disparo_c);
+            discab.back()->posx = bars[0]->getEsf()->getPX();
+            discab.back()->posy = 720 - bars[0]->getEsf()->getPY();
+            discab.back()->moment = bars[0]->moment;
+            discab.back()->setPos(discab.back()->posx,discab.back()->posy);
+            scene->addItem(discab.back());
+            con_cad = 100;
         }
 
     }

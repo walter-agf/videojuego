@@ -21,6 +21,8 @@ using namespace std;
 #include "mago.h"
 #include "minotauro.h"
 #include "jefe_uno.h"
+#include "disparo_m.h"
+#include "disparo_c.h"
 
 
 namespace Ui {
@@ -42,7 +44,8 @@ public:
     int cantidad_x, cantidad_y;
     float distancia = 0;
     int vida_one  = 100;
-    int estado = 0;
+    int estado = 0, est_mago = 0, con_cad = 0;
+    bool eliminar = false;
 
     void nivel(string num_);
 
@@ -70,6 +73,8 @@ private:
     void borderCollision(elemento *b);
     void keyPressEvent(QKeyEvent *event);
 
+    QList<disparo_c*> discab;
+    QList<disparo_m*> dismag;
     jefe_uno *jefe;
     QList<grafica*> bars;
     QList<mago*> magos;
