@@ -12,7 +12,7 @@ oneplayer::oneplayer(QWidget *parent) :
 
     h_limit = 720;
     w_limit = 0;
-    num = "3"; //Selecciona el nivel a comenzar
+    num = "1"; //Selecciona el nivel a comenzar
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(w_limit,0,1280,720);
@@ -478,7 +478,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
 
         //_____________Disparo____________________________________________
 
-        if(event->key() == Qt::Key_E && con_cad == 0){
+        if(event->key() == Qt::Key_Space && con_cad == 0){
             //Prueba agregar un disparo_mago
             discab.push_back(new disparo_c);
             discab.back()->posx = bars[0]->getEsf()->getPX();
