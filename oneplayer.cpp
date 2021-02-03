@@ -22,7 +22,7 @@ oneplayer::oneplayer(QWidget *parent) :
     scene->addItem(jug);
 
     //Se construye el nivel seleccionado
-    num = "1"; //Selecciona el nivel a comenzar
+    num = "2"; //Selecciona el nivel a comenzar
     nivel(num);
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
@@ -152,17 +152,18 @@ void oneplayer::actualizar()
     if ( estado != 0){estado -= 1;}//contador de tiempo de star cuando es atacado
     if ( con_cad != 0){con_cad -= 1;}//contador de tiempo de disparo
     if ( est_mago != 0){est_mago -= 1;}//contador de disparo de los magos
+    if ( disparo_jefe != 0){disparo_jefe -= 1;}//contador de disparo del jefe
 
     elemento *b = jug->getEsf();
     jug->actualizar_grafica();
     borderCollision(b);
-    //----------------Disparo___________
+    //----------------Disparo____del__jugador_______
     for (int o = 0; o < discab.size(); o++){
         if (discab[o]->moment == 0 || discab[o]->moment == 2 || discab[o]->moment == 4 || discab[o]->moment == 8){discab[o]->posx += 2;}
         else {discab[o]->posx -= 2;}
         discab[o]->setPos(discab[o]->posx,discab[o]->posy);
         eliminar = false;
-        discab[o]->rango -=2;
+        discab[o]->rango -=2;//eliminar disparo del jugador
         //Minotarua
         for (int t = 0;t < tauros.size();t++){
             if (tauros[t]->collidesWithItem(discab[o])){
@@ -198,7 +199,7 @@ void oneplayer::actualizar()
         }
         if (jefe != NULL){
             if (jefe->collidesWithItem(discab[o])){
-                vida_j -= 20;
+                vida_j -= 50;//resta del jefe
                 ui->vida_jefe->setText(QString::number(vida_j));
                 eliminar = true;
             }
@@ -217,7 +218,41 @@ void oneplayer::actualizar()
             discab.removeAt(o);
         }
     }
-    //__________________________________
+    //______________________________________________
+
+    for (int j = 0; j < dis_j1.size(); j++){ // disparo uno de jefe
+        dis_j1[j]->posx -= 2;
+        dis_j1[j]->setPos(dis_j1[j]->posx,dis_j1[j]->posy);
+        if (dis_j1[j]->posx < 3840){
+            scene->removeItem(dis_j1[j]);
+            dis_j1.removeAt(j);
+        }
+        if (dis_j1[j]->collidesWithItem(jug)){
+            vida_one -= 4;//resta del jefe
+            ui->vida->setText(QString::number(vida_one));
+            scene->removeItem(dis_j1[j]);
+            dis_j1.removeAt(j);
+        }
+    }
+    for (int u = 0; u < dis_j2.size(); u++){ // disparo dos del jefe
+        dis_j2[u]->posy += 1.5;
+        dis_j2[u]->setPos(dis_j2[u]->posx,dis_j2[u]->posy);
+
+        if (dis_j2[u]->collidesWithItem(jug)){
+            vida_one -= 6;//resta del jefe
+            ui->vida->setText(QString::number(vida_one));
+            scene->removeItem(dis_j2[u]);
+            dis_j2.removeAt(u);
+        }
+
+        for (int y = 0; y < contras.size(); y++){
+            if (dis_j2[u]->collidesWithItem(contras[y])){
+                scene->removeItem(dis_j2[u]);
+                dis_j2.removeAt(u);
+            }
+        }
+    }
+    //______________________________________________
     for (int a = 0;a < contras.size();a++) {
         if (jug->collidesWithItem(contras[a])){
             //PISO
@@ -265,16 +300,66 @@ void oneplayer::actualizar()
                         if (b->getPX() < magos[m]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
                         else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
                     }
-                    estado = 200;
-                    //Prueba agregar un disparo_mago
+                    estado = 500; //velocidad de disparo del mago
+                    //disparo_mago
                     dismag.push_back(new disparo_m);
                     dismag.back()->posx = magos[m]->posx;
                     dismag.back()->posy = magos[m]->posy;
                     dismag.back()->setPos(dismag.back()->posx,dismag.back()->posy);
                     scene->addItem(dismag.back());
-                    est_mago = 1200;
+                    est_mago = 800; //tiempo_disparo_del_mago
                 }
             }
+            //_________________Disparo__Jefe________________
+
+            if (b->getPX() > 3840 && vida_j > 0 && disparo_jefe == 0){
+                tipo_dis=1+rand()%(10);
+                if ( tipo_dis <= 5){
+                    dis_j1.push_back(new dis_jefe_1);
+                    dis_j1.back()->posx = jefe->posx;
+                    dis_j1.back()->posy = 720 - jug->getEsf()->getPY();
+                    dis_j1.back()->setPos(dis_j1.back()->posx,dis_j1.back()->posy);
+                    scene->addItem(dis_j1.back());
+                    disparo_jefe = 200;
+                }
+                else if (tipo_dis > 5 && tipo_dis <= 8) {
+                    tipo_dis=3840+rand()%(100);
+                    while (tipo_dis < 5120){
+                        dis_j2.push_back(new dis_jefe_2);
+                        dis_j2.back()->posx = tipo_dis;
+                        dis_j2.back()->posy = 24;
+                        dis_j2.back()->setPos(dis_j2.back()->posx,dis_j2.back()->posy);
+                        scene->addItem(dis_j2.back());
+                        tipo_dis += 100;
+                    }
+                    disparo_jefe = 200;
+                }
+                else {
+
+                    for (int n; n < contras.size(); n++){
+                        if (contras[n]->posx >= 3840){
+                            if ( num == "3"){
+                                tauros.push_back(new minotauro);
+                                tauros.back()->posx = (cantidad_x/2) + numero_x;
+                                tauros.back()->posy = numero_y-18;
+                                tauros.back()->actualizar_minotauro();
+                                scene->addItem(tauros.back());
+                            }
+                            else {
+                                tipo_dis=1+rand()%(7);
+                                if (tipo_dis == 2){
+                                    magos.push_back(new mago);
+                                    magos.back()->posx = (contras[n]->w/2) + contras[n]->posx;
+                                    magos.back()->posy = contras[n]->posy-30;
+                                    magos.back()->actualizar_mago();
+                                    scene->addItem(magos.back());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            //______________________________________________
             if (jug->collidesWithItem(jefe)){ //colicion con el jefe
                 if (estado == 0 && vida_one > 0){
                     vida_one -= 10;

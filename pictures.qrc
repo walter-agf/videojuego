@@ -18,5 +18,7 @@
         <file>pictures/wizard idle__reboot.png</file>
         <file>pictures/ataque_mago.png</file>
         <file>pictures/disparo_jugador.png</file>
+        <file>pictures/disparo_jefe_caida.png</file>
+        <file>pictures/disparo_jefe_recto.png</file>
     </qresource>
 </RCC>
