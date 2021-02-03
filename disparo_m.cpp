@@ -8,7 +8,7 @@ disparo_m::disparo_m(QObject *parent) : QObject(parent)
 
     pixmap = new QPixmap(":/pictures/ataque_mago.png");
 
-    timer->start(50);
+    timer->start(40);
     connect(timer,&QTimer::timeout,this,&disparo_m::actualizar_disparo_mago);
 }
 

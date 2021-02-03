@@ -6,14 +6,12 @@ oneplayer::oneplayer(QWidget *parent) :
     ui(new Ui::oneplayer)
 {
     ui->setupUi(this);
-
     timer = new QTimer(this);
     timer->start(7);
-
+    //se dan limites de ubicacion de la scena que deseamos
     h_limit = 720;
     w_limit = 0;
-    num = "1"; //Selecciona el nivel a comenzar
-
+    //se contrulle diche scena
     scene = new QGraphicsScene(this);
     scene->setSceneRect(w_limit,0,1280,720);
     ui->graphicsView->setScene(scene);
@@ -22,6 +20,9 @@ oneplayer::oneplayer(QWidget *parent) :
     bars.push_back(new grafica);
     bars.back()->actualizar_grafica();
     scene->addItem(bars.back());
+
+    //Se construye el nivel seleccionado
+    num = "1"; //Selecciona el nivel a comenzar
     nivel(num);
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
@@ -31,7 +32,6 @@ oneplayer::~oneplayer()
 void oneplayer::nivel(string num_)
 {   
     vector<string> estacion;
-
     if (num_ == "1"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));
         estacion = uno();
@@ -76,56 +76,37 @@ void oneplayer::nivel(string num_)
     }
 
     for (int i = 0; i < estacion.size(); i++){
-
         //Averigua Dato de posicion en x
         x_pix = estacion[i].substr(0,estacion[i].find(' '));
         estacion[i] = estacion[i].substr(estacion[i].find(' ')+1,estacion[i].find('S'));
-
         //Averigua dato de posicion en y
         y_pix = estacion[i].substr(0,estacion[i].find(' '));
         estacion[i] = estacion[i].substr(estacion[i].find(' ')+1,estacion[i].find('S'));
-
         //Averigua dato de tamaño en x
-
         x_tam = estacion[i].substr(0,estacion[i].find(' '));
         estacion[i] = estacion[i].substr(estacion[i].find(' ')+1,estacion[i].find('S'));
-
         //A-verigua dato de tamaño en y
-
         y_tam = estacion[i].substr(0,estacion[i].find('S'));
-
         //CONVERSOR A ENTERO
         //Convierte a entero el valor de cadena de poscion en x
         largo = x_pix.size();
         numero_x = 0;
-        for(int i = 0; i<largo; i++){
-            numero_x += (int (x_pix[i])-48) * pow(10,largo - i -1);
-        }
-
+        for(int i = 0; i<largo; i++){numero_x += (int (x_pix[i])-48) * pow(10,largo - i -1);}
         //Convierte a entero el valor de cadena de poscion en y
         largo = y_pix.size();
         numero_y = 0;
-        for(int i = 0; i<largo; i++){
-            numero_y += (int (y_pix[i])-48) * pow(10,largo - i -1);
-        }
-
+        for(int i = 0; i<largo; i++){numero_y += (int (y_pix[i])-48) * pow(10,largo - i -1);}
         //Convierte a entero el valor de cadena de tamaño en x
         largo = x_tam.size();
         cantidad_x = 0;
-        for(int i = 0; i<largo; i++){
-            cantidad_x += (int (x_tam[i])-48) * pow(10,largo - i -1);
-        }
-
+        for(int i = 0; i<largo; i++){cantidad_x += (int (x_tam[i])-48) * pow(10,largo - i -1);}
         //Convierte a entero el valor de cadena de tamaño en y
         largo = y_tam.size();
         cantidad_y = 0;
-        for(int i = 0; i<largo; i++){
-            cantidad_y += (int (y_tam[i])-48) * pow(10,largo - i -1);
-        }
-
+        for(int i = 0; i<largo; i++){cantidad_y += (int (y_tam[i])-48) * pow(10,largo - i -1);}
         //Lo agrega a la scena
         contras.push_back(new muros(numero_x, numero_y, cantidad_x, cantidad_y)); scene->addItem(contras.back());
-
+        //Se agregan los enemigos, segun el tamaño de la base
         if (cantidad_x >= 200){
             if (enemigo == 1 || enemigo == 2){
                     //Prueba agregar un minotauro
@@ -135,7 +116,7 @@ void oneplayer::nivel(string num_)
                     tauros.back()->actualizar_minotauro();
                     scene->addItem(tauros.back());
                     enemigo++;
-                }
+            }
             else if (enemigo == 3){
                     //Prueba agregar un mago
                     magos.push_back(new mago);
@@ -144,29 +125,21 @@ void oneplayer::nivel(string num_)
                     magos.back()->actualizar_mago();
                     scene->addItem(magos.back());
                     enemigo = 1;
-                }
+            }
         }
     }
 }
 
 void oneplayer::actualizar()
 {   
-    if ( estado != 0){
-        estado -= 1;
-    }
-    if ( con_cad != 0){
-        con_cad -= 1;
-    }
-    if ( est_mago != 0){
-        est_mago -= 1;
-    }
-
+    if ( estado != 0){estado -= 1;}//contador de tiempo de star cuando es atacado
+    if ( con_cad != 0){con_cad -= 1;}//contador de tiempo de disparo
+    if ( est_mago != 0){est_mago -= 1;}//contador de disparo de los magos
     for (int i = 0;i< bars.size() ;i++ ) {
         elemento *b = bars.at(i)->getEsf();
         bars.at(i)->actualizar_grafica();
         borderCollision(b);
         //----------------Disparo___________
-
         for (int o = 0; o < discab.size(); o++){
             if (discab[o]->moment == 0 || discab[o]->moment == 2 || discab[o]->moment == 4 || discab[o]->moment == 8){discab[o]->posx += 2;}
             else {discab[o]->posx -= 2;}
@@ -200,55 +173,45 @@ void oneplayer::actualizar()
                     break;
                 }
             }
-
+            //eliminar disparo
             if (eliminar == true){
                 scene->removeItem(discab[o]);
                 discab.removeAt(o);
-            }
+            }//rango de disparo que no coliciona
             else if (discab[o]->rango <= 0){
                 scene->removeItem(discab[o]);
                 discab.removeAt(o);
             }
         }
-
         //__________________________________
         for (int a = 0;a < contras.size();a++) {
-
             if (bars[i]->collidesWithItem(contras[a])){
-
                 //PISO
                 if (b->getVY() < 1 && b->getPX() > contras[a]->getposx()-10 && b->getPX() < contras[a]->getposx() + contras[a]->getw()+10 && 730 - b->getPY()< contras[a]->getposy()){
                     b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.047);
                 }
-
                 //DERECHA
                 if (b->getPX()+20 <= contras[a]->getposx() && b->getVX() > -1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
-
                 //IZQUIERDA
                 else if (b->getPX()-20 >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
-
-
-                //Enemigos__________________________________________________________________________________
-
+                //Enemigos__________________________Fisica_Logicas___________________________________________________
                 for (int t = 0;t < tauros.size();t++){
-                    if (tauros[t]->collidesWithItem(contras[a])){
-                        if (b->getPX() < tauros[t]->posx){
+                    if (tauros[t]->collidesWithItem(contras[a])){ //movimiento
+                        if (b->getPX() < tauros[t]->posx){ // derecha
                             tauros[t]->moment = 3;
                             tauros[t]->posx -= 0.8;
                             tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
                         }
-                        else if (b->getPX() > tauros[t]->posx){
+                        else if (b->getPX() > tauros[t]->posx){ //izquierda
                             tauros[t]->moment = 2;
                             tauros[t]->posx += 0.8;
                             tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
                         }
-
-
-                        if (tauros[t]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){
+                        if (tauros[t]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){ //colicion con el jugador
                             vida_one -= 4;
                             ui->vida->setText(QString::number(vida_one));
                             if (b->getPX() < tauros[t]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
@@ -257,15 +220,11 @@ void oneplayer::actualizar()
                         }
                     }
                 }
-
-                for (int m = 0;m < magos.size();m++){
-
+                for (int m = 0;m < magos.size();m++){ // fisica de magos
                     distancia = pow(b->getPX() - magos[m]->posx,2);
                     distancia += pow((720 - b->getPY()) - magos[m]->posy,2);
-                    distancia = pow (distancia,0.5);
-
+                    distancia = pow (distancia,0.5);//calculo del rango
                     if (distancia < magos[m]->rango && estado == 0  && vida_one > 0){
-
                         if (magos[m]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){
                             vida_one -= 4;
                             ui->vida->setText(QString::number(vida_one));
@@ -282,8 +241,7 @@ void oneplayer::actualizar()
                         est_mago = 1200;
                     }
                 }
-
-                if (bars[i]->collidesWithItem(jefe)){
+                if (bars[i]->collidesWithItem(jefe)){ //colicion con el jefe
                     if (estado == 0 && vida_one > 0){
                         vida_one -= 10;
                         if (vida_one < 0){vida_one=0;}
@@ -475,9 +433,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
                 b->set_vel(b->getVX() - 16,b->getVY(),b->getPX(),b->getPY());
             }
         }
-
         //_____________Disparo____________________________________________
-
         if(event->key() == Qt::Key_Space && con_cad == 0){
             //Prueba agregar un disparo_mago
             discab.push_back(new disparo_c);
@@ -488,7 +444,6 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
             scene->addItem(discab.back());
             con_cad = 100;
         }
-
     }
 }
 void oneplayer::on_actionVolver_triggered(){close();}
@@ -508,5 +463,4 @@ void oneplayer::on_actionPausa_triggered()
     else {
         timer->start(7);
     }
-
 }

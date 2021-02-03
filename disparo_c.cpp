@@ -8,7 +8,7 @@ disparo_c::disparo_c(QObject *parent) : QObject(parent)
 
     pixmap = new QPixmap(":/pictures/disparo_jugador.png");
 
-    timer->start(30);
+    timer->start(20);
     connect(timer,&QTimer::timeout,this,&disparo_c::actualizar_disparo_caballero);
 }
 
