@@ -212,8 +212,6 @@ void multiplayer::borderCollision(elemento *b)
 void multiplayer::keyPressEvent(QKeyEvent *event)
 {
     elemento *b = bars.at(0)->getEsf();
-    elemento *z = bars.at(1)->getEsf();
-
 
     if (conti == true){
 
@@ -323,6 +321,8 @@ void multiplayer::keyPressEvent(QKeyEvent *event)
 
     //__________________________
 
+    elemento *z = bars.at(1)->getEsf();
+
     if(event->key() == Qt::Key_L){
 
         bars.at(1)->moment = 2;
@@ -336,12 +336,7 @@ void multiplayer::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-
-
     //___________________________-
-
-
-
 }
 void multiplayer::on_actionVolver_triggered(){close();}
 

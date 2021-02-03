@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <QMouseEvent>
 using namespace std;
 
 #include "elemento.h"

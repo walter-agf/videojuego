@@ -17,9 +17,9 @@ oneplayer::oneplayer(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     //EN MODO JUGADOR UNICO
-    bars.push_back(new grafica);
-    bars.back()->actualizar_grafica();
-    scene->addItem(bars.back());
+    jug = new grafica(this);
+    jug->actualizar_grafica();
+    scene->addItem(jug);
 
     //Se construye el nivel seleccionado
     num = "1"; //Selecciona el nivel a comenzar
@@ -135,215 +135,214 @@ void oneplayer::actualizar()
     if ( estado != 0){estado -= 1;}//contador de tiempo de star cuando es atacado
     if ( con_cad != 0){con_cad -= 1;}//contador de tiempo de disparo
     if ( est_mago != 0){est_mago -= 1;}//contador de disparo de los magos
-    for (int i = 0;i< bars.size() ;i++ ) {
-        elemento *b = bars.at(i)->getEsf();
-        bars.at(i)->actualizar_grafica();
-        borderCollision(b);
-        //----------------Disparo___________
-        for (int o = 0; o < discab.size(); o++){
-            if (discab[o]->moment == 0 || discab[o]->moment == 2 || discab[o]->moment == 4 || discab[o]->moment == 8){discab[o]->posx += 2;}
-            else {discab[o]->posx -= 2;}
-            discab[o]->setPos(discab[o]->posx,discab[o]->posy);
-            eliminar = false;
-            discab[o]->rango -=2;
-            //Minotarua
-            for (int t = 0;t < tauros.size();t++){
-                if (tauros[t]->collidesWithItem(discab[o])){
-                    scene->removeItem(tauros[t]);
-                    tauros.removeAt(t);
-                    eliminar = true;
-                    break;
-                }
-            }
-            //Mago
-            for (int m = 0;m < magos.size() && eliminar != true;m++){
-                if (magos[m]->collidesWithItem(discab[o])){
-                    scene->removeItem(magos[m]);
-                    magos.removeAt(m);
-                    eliminar = true;
-                    break;
-                }
-            }
-            //Bala
-            for (int e = 0;e < dismag.size() && eliminar!= true;e++){
-                if (dismag[e]->collidesWithItem(discab[o])){
-                    scene->removeItem(dismag[e]);
-                    dismag.removeAt(e);
-                    eliminar = true;
-                    break;
-                }
-            }
-            //eliminar disparo
-            if (eliminar == true){
-                scene->removeItem(discab[o]);
-                discab.removeAt(o);
-            }//rango de disparo que no coliciona
-            else if (discab[o]->rango <= 0){
-                scene->removeItem(discab[o]);
-                discab.removeAt(o);
-            }
-        }
-        //__________________________________
-        for (int a = 0;a < contras.size();a++) {
-            if (bars[i]->collidesWithItem(contras[a])){
-                //PISO
-                if (b->getVY() < 1 && b->getPX() > contras[a]->getposx()-10 && b->getPX() < contras[a]->getposx() + contras[a]->getw()+10 && 730 - b->getPY()< contras[a]->getposy()){
-                    b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.047);
-                }
-                //DERECHA
-                if (b->getPX()+20 <= contras[a]->getposx() && b->getVX() > -1){
-                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                }
-                //IZQUIERDA
-                else if (b->getPX()-20 >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
-                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
-                }
-                //Enemigos__________________________Fisica_Logicas___________________________________________________
-                for (int t = 0;t < tauros.size();t++){
-                    if (tauros[t]->collidesWithItem(contras[a])){ //movimiento
-                        if (b->getPX() < tauros[t]->posx){ // derecha
-                            tauros[t]->moment = 3;
-                            tauros[t]->posx -= 0.8;
-                            tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
-                        }
-                        else if (b->getPX() > tauros[t]->posx){ //izquierda
-                            tauros[t]->moment = 2;
-                            tauros[t]->posx += 0.8;
-                            tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
-                        }
-                        if (tauros[t]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){ //colicion con el jugador
-                            vida_one -= 4;
-                            ui->vida->setText(QString::number(vida_one));
-                            if (b->getPX() < tauros[t]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
-                            else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
-                            estado = 300;
-                        }
-                    }
-                }
-                for (int m = 0;m < magos.size();m++){ // fisica de magos
-                    distancia = pow(b->getPX() - magos[m]->posx,2);
-                    distancia += pow((720 - b->getPY()) - magos[m]->posy,2);
-                    distancia = pow (distancia,0.5);//calculo del rango
-                    if (distancia < magos[m]->rango && estado == 0  && vida_one > 0){
-                        if (magos[m]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){
-                            vida_one -= 4;
-                            ui->vida->setText(QString::number(vida_one));
-                            if (b->getPX() < magos[m]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
-                            else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
-                        }
-                        estado = 200;
-                        //Prueba agregar un disparo_mago
-                        dismag.push_back(new disparo_m);
-                        dismag.back()->posx = magos[m]->posx;
-                        dismag.back()->posy = magos[m]->posy;
-                        dismag.back()->setPos(dismag.back()->posx,dismag.back()->posy);
-                        scene->addItem(dismag.back());
-                        est_mago = 1200;
-                    }
-                }
-                if (bars[i]->collidesWithItem(jefe)){ //colicion con el jefe
-                    if (estado == 0 && vida_one > 0){
-                        vida_one -= 10;
-                        if (vida_one < 0){vida_one=0;}
-                        ui->vida->setText(QString::number(vida_one));
-                        estado = 200;
-                    }
-                    b->set_vel(-30,b->getVY()+10,b->getPX()-20,b->getPY()+0.0171);
-                }
-                //__________________________________________________________________________________________
-            }
-        }
-        //Cambios de pantalla o nivel
-        //Avanzar pantalla
-        if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){
-            w_limit += 1280;
-            b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
-            scene->setSceneRect(w_limit,0,1280,720);
-        }
-        //Retroceder pantalla
-        else if (b->getPX() - 22 < w_limit && b->getPX() > 200){
-            if (b->getPX() -22 > 3800){
-                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX() + 10,b->getPY());
-            }
-            else{
-                w_limit -= 1280;
-                b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
-                scene->setSceneRect(w_limit,0,1280,720);
-            }
-        }
-        //Cambio de nivel
-        else if (b->getPX() + 22 > 5070){
-            if (num == "1"){num = "2";}
-            else if (num == "2"){num = "3";}
-            else if  (num == "3"){
-                QString val;
-                val = "";
-                val += "Felicitaciones :D\n\nHas Ganado";
-                QMessageBox::about (this,"ContraCruzada", val);
-                close();
-            }
-            w_limit = 0;
-            scene->setSceneRect(w_limit,0,1280,720);
-            b->set_vel(0,0,50,300);
-            nivel(num);  
-        }
-        else if (700 + b->getPY() <= 720 && bars[i]->moment != 6 && bars[i]->moment != 7){
-            if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
-            else {bars[i]->moment = 7;}
-            b->set_vel(0,0,b->getPX(),b->getPY());
-            vida_one = 0;
-        }
-        else if (vida_one <= 0){
-            if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
-            else {bars[i]->moment = 7;}
-            b->set_vel(0,0,b->getPX(),b->getPY());
-        }
-        if (bars[i]->moment == 6 || bars[i]->moment == 7){
-            if (bars[i]->columnas == 396 && vida_one <= 0){
-                QString val;
-                val = "";
-                val += "Jugador 1 Elimindo :_(\n\nDerrotado";
-                QMessageBox::about (this,"ContraCruzada", val);
-                conti = false;
-                bars[i]->moment = 10;
-                bars[i]->columnas = 440;
-            }
-        }
-        if (conti == false){
-            close();
-        }
-        for (int e=0; e < dismag.size(); e++){
 
-            if (b->getPX() < dismag[e]->posx){
-                dismag[e]->posx -= 0.6;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+    elemento *b = jug->getEsf();
+    jug->actualizar_grafica();
+    borderCollision(b);
+    //----------------Disparo___________
+    for (int o = 0; o < discab.size(); o++){
+        if (discab[o]->moment == 0 || discab[o]->moment == 2 || discab[o]->moment == 4 || discab[o]->moment == 8){discab[o]->posx += 2;}
+        else {discab[o]->posx -= 2;}
+        discab[o]->setPos(discab[o]->posx,discab[o]->posy);
+        eliminar = false;
+        discab[o]->rango -=2;
+        //Minotarua
+        for (int t = 0;t < tauros.size();t++){
+            if (tauros[t]->collidesWithItem(discab[o])){
+                scene->removeItem(tauros[t]);
+                tauros.removeAt(t);
+                eliminar = true;
+                break;
             }
-            else if (b->getPX() > dismag[e]->posx){
-                dismag[e]->posx += 0.6;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+        }
+        //Mago
+        for (int m = 0;m < magos.size() && eliminar != true;m++){
+            if (magos[m]->collidesWithItem(discab[o])){
+                scene->removeItem(magos[m]);
+                magos.removeAt(m);
+                eliminar = true;
+                break;
             }
-
-
-            if (720 - b->getPY() < dismag[e]->posy){
-                dismag[e]->posy -= 0.6;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
-            }
-
-            else if (720 - b->getPY() > dismag[e]->posy){
-                dismag[e]->posy += 0.6;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
-            }
-
-            if (dismag[e]->collidesWithItem(bars[i])){
-                vida_one -= 6;
-                ui->vida->setText(QString::number(vida_one));
+        }
+        //Bala
+        for (int e = 0;e < dismag.size() && eliminar!= true;e++){
+            if (dismag[e]->collidesWithItem(discab[o])){
                 scene->removeItem(dismag[e]);
                 dismag.removeAt(e);
+                eliminar = true;
+                break;
             }
-            else if (est_mago <= 0){
-                scene->removeItem(dismag[0]);
-                dismag.removeAt(0);
+        }
+        //eliminar disparo
+        if (eliminar == true){
+            scene->removeItem(discab[o]);
+            discab.removeAt(o);
+        }//rango de disparo que no coliciona
+        else if (discab[o]->rango <= 0){
+            scene->removeItem(discab[o]);
+            discab.removeAt(o);
+        }
+    }
+    //__________________________________
+    for (int a = 0;a < contras.size();a++) {
+        if (jug->collidesWithItem(contras[a])){
+            //PISO
+            if (b->getVY() < 1 && b->getPX() > contras[a]->getposx()-10 && b->getPX() < contras[a]->getposx() + contras[a]->getw()+10 && 730 - b->getPY()< contras[a]->getposy()){
+                b->set_vel(b->getVX(),-1*b->getE()*b->getVY(),b->getPX(),b->getPY()+0.047);
             }
+            //DERECHA
+            if (b->getPX()+20 <= contras[a]->getposx() && b->getVX() > -1){
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
+            }
+            //IZQUIERDA
+            else if (b->getPX()-20 >= contras[a]->getposx() + contras[a]->getw() && b->getVX() < 1){
+                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
+            }
+            //Enemigos__________________________Fisica_Logicas___________________________________________________
+            for (int t = 0;t < tauros.size();t++){
+                if (tauros[t]->collidesWithItem(contras[a])){ //movimiento
+                    if (b->getPX() < tauros[t]->posx){ // derecha
+                        tauros[t]->moment = 3;
+                        tauros[t]->posx -= 0.8;
+                        tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
+                    }
+                    else if (b->getPX() > tauros[t]->posx){ //izquierda
+                        tauros[t]->moment = 2;
+                        tauros[t]->posx += 0.8;
+                        tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
+                    }
+                    if (tauros[t]->collidesWithItem(jug) && estado == 0 && vida_one > 0){ //colicion con el jugador
+                        vida_one -= 4;
+                        ui->vida->setText(QString::number(vida_one));
+                        if (b->getPX() < tauros[t]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
+                        else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
+                        estado = 300;
+                    }
+                }
+            }
+            for (int m = 0;m < magos.size();m++){ // fisica de magos
+                distancia = pow(b->getPX() - magos[m]->posx,2);
+                distancia += pow((720 - b->getPY()) - magos[m]->posy,2);
+                distancia = pow (distancia,0.5);//calculo del rango
+                if (distancia < magos[m]->rango && estado == 0  && vida_one > 0){
+                    if (magos[m]->collidesWithItem(jug) && estado == 0 && vida_one > 0){
+                        vida_one -= 4;
+                        ui->vida->setText(QString::number(vida_one));
+                        if (b->getPX() < magos[m]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
+                        else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
+                    }
+                    estado = 200;
+                    //Prueba agregar un disparo_mago
+                    dismag.push_back(new disparo_m);
+                    dismag.back()->posx = magos[m]->posx;
+                    dismag.back()->posy = magos[m]->posy;
+                    dismag.back()->setPos(dismag.back()->posx,dismag.back()->posy);
+                    scene->addItem(dismag.back());
+                    est_mago = 1200;
+                }
+            }
+            if (jug->collidesWithItem(jefe)){ //colicion con el jefe
+                if (estado == 0 && vida_one > 0){
+                    vida_one -= 10;
+                    if (vida_one < 0){vida_one=0;}
+                    ui->vida->setText(QString::number(vida_one));
+                    estado = 200;
+                }
+                b->set_vel(-30,b->getVY()+10,b->getPX()-20,b->getPY()+0.0171);
+            }
+            //__________________________________________________________________________________________
+        }
+    }
+    //Cambios de pantalla o nivel
+    //Avanzar pantalla
+    if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){
+        w_limit += 1280;
+        b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
+        scene->setSceneRect(w_limit,0,1280,720);
+    }
+    //Retroceder pantalla
+    else if (b->getPX() - 22 < w_limit && b->getPX() > 200){
+        if (b->getPX() -22 > 3800){
+            b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX() + 10,b->getPY());
+        }
+        else{
+            w_limit -= 1280;
+            b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
+            scene->setSceneRect(w_limit,0,1280,720);
+        }
+    }
+    //Cambio de nivel
+    else if (b->getPX() + 22 > 5070){
+        if (num == "1"){num = "2";}
+        else if (num == "2"){num = "3";}
+        else if  (num == "3"){
+            QString val;
+            val = "";
+            val += "Felicitaciones :D\n\nHas Ganado";
+            QMessageBox::about (this,"ContraCruzada", val);
+            close();
+        }
+        w_limit = 0;
+        scene->setSceneRect(w_limit,0,1280,720);
+        b->set_vel(0,0,50,300);
+        nivel(num);
+    }
+    else if (700 + b->getPY() <= 720 && jug->moment != 6 && jug->moment != 7){
+        if (jug->moment == 0 || jug->moment == 2 || jug->moment == 4 || jug->moment == 8){jug->moment = 6;}
+        else {jug->moment = 7;}
+        b->set_vel(0,0,b->getPX(),b->getPY());
+        vida_one = 0;
+    }
+    else if (vida_one <= 0){
+        if (jug->moment == 0 || jug->moment == 2 || jug->moment == 4 || jug->moment == 8){jug->moment = 6;}
+        else {jug->moment = 7;}
+        b->set_vel(0,0,b->getPX(),b->getPY());
+    }
+    if (jug->moment == 6 || jug->moment == 7){
+        if (jug->columnas == 396 && vida_one <= 0){
+            QString val;
+            val = "";
+            val += "Jugador 1 Elimindo :_(\n\nDerrotado";
+            QMessageBox::about (this,"ContraCruzada", val);
+            conti = false;
+            jug->moment = 10;
+            jug->columnas = 440;
+        }
+    }
+    if (conti == false){
+        close();
+    }
+    for (int e=0; e < dismag.size(); e++){
+
+        if (b->getPX() < dismag[e]->posx){
+            dismag[e]->posx -= 0.6;
+            dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+        }
+        else if (b->getPX() > dismag[e]->posx){
+            dismag[e]->posx += 0.6;
+            dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+        }
+
+
+        if (720 - b->getPY() < dismag[e]->posy){
+            dismag[e]->posy -= 0.6;
+            dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+        }
+
+        else if (720 - b->getPY() > dismag[e]->posy){
+            dismag[e]->posy += 0.6;
+            dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+        }
+
+        if (dismag[e]->collidesWithItem(jug)){
+            vida_one -= 6;
+            ui->vida->setText(QString::number(vida_one));
+            scene->removeItem(dismag[e]);
+            dismag.removeAt(e);
+        }
+        else if (est_mago <= 0){
+            scene->removeItem(dismag[0]);
+            dismag.removeAt(0);
         }
     }
 }
@@ -363,48 +362,48 @@ void oneplayer::borderCollision(elemento *b)
 
 void oneplayer::keyPressEvent(QKeyEvent *event)
 {
-    elemento *b = bars.at(0)->getEsf();
+    elemento *b = jug->getEsf();
 
     if (conti == true){
 
         if(event->key() == Qt::Key_D){
 
-            bars.at(0)->moment = 2;
+            jug->moment = 2;
 
             b->set_vel(12,b->getVY(),b->getPX(),b->getPY());
 
             for (int a = 0;a < contras.size();a++) {
 
-                if (bars[0]->collidesWithItem(contras[a]) && b->getPX() + b->getR() <= contras[a]->getposx()){
+                if (jug->collidesWithItem(contras[a]) && b->getPX() + b->getR() <= contras[a]->getposx()){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
             }
         }
         if(event->key() == Qt::Key_A){
 
-            bars.at(0)->moment = 3;
+            jug->moment = 3;
 
             b->set_vel(-12,b->getVY(),b->getPX(),b->getPY());
 
             for (int a = 0;a < contras.size();a++) {
 
-                if (bars[0]->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
+                if (jug->collidesWithItem(contras[a]) && b->getPX() - b->getR() >= contras[a]->getposx() + contras[a]->getw()){
                     b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
             }
 
 
         }
-        if(event->key() == Qt::Key_W && bars.at(0)->getEsf()->getVY() <= 1 && bars.at(0)->getEsf()->getVY() >= -1){
+        if(event->key() == Qt::Key_W && jug->getEsf()->getVY() <= 1 && jug->getEsf()->getVY() >= -1){
 
-            if (bars.at(0)->moment == 2  || bars.at(0)->moment == 0 ) {
-                bars.at(0)->moment = 4;
+            if (jug->moment == 2  || jug->moment == 0 ) {
+                jug->moment = 4;
                 if (b->getVX()<=1){b->set_vel(b->getVX(),70,b->getPX(),b->getPY());}
                 else {b->set_vel(b->getVX()+12 ,70,b->getPX(),b->getPY());}
 
             }
-            else if (bars.at(0)->moment == 3 || bars.at(0)->moment == 1) {
-                bars.at(0)->moment = 5;
+            else if (jug->moment == 3 || jug->moment == 1) {
+                jug->moment = 5;
                 if (b->getVX()>=-1){b->set_vel(b->getVX(),70,b->getPX(),b->getPY());}
                 else {b->set_vel(b->getVX()-12 ,70,b->getPX(),b->getPY());}
             }
@@ -412,24 +411,24 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
         }
         if (event->key() == Qt::Key_S){
             for (int a = 0;a < contras.size();a++) {
-                if (bars[0]->collidesWithItem(contras[a]) && b->getPX() + 10 >= contras[a]->getposx() + contras[a]->getw()){
+                if (jug->collidesWithItem(contras[a]) && b->getPX() + 10 >= contras[a]->getposx() + contras[a]->getw()){
                     b->set_vel(0,b->getVY(),b->getPX(),b->getPY()+0.0171);
                 }
             }
-            if (bars[0]->moment == 4){
-                bars[0]->moment = 8;
+            if (jug->moment == 4){
+                jug->moment = 8;
                 b->set_vel(b->getVX(),b->getVY() - 16,b->getPX(),b->getPY());
             }
-            else if (bars[0]->moment == 5){
-                bars[0]->moment = 9;
+            else if (jug->moment == 5){
+                jug->moment = 9;
                 b->set_vel(b->getVX(),b->getVY() - 16,b->getPX(),b->getPY());
             }
-            else if (bars[0]->moment == 2 && b->getVX() > 0){
-                bars[0]->moment = 8;
+            else if (jug->moment == 2 && b->getVX() > 0){
+                jug->moment = 8;
                 b->set_vel(b->getVX() + 16,b->getVY(),b->getPX(),b->getPY());
             }
-            else if (bars[0]->moment == 3 && b->getVX() < 0){
-                bars[0]->moment = 9;
+            else if (jug->moment == 3 && b->getVX() < 0){
+                jug->moment = 9;
                 b->set_vel(b->getVX() - 16,b->getVY(),b->getPX(),b->getPY());
             }
         }
@@ -437,9 +436,9 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
         if(event->key() == Qt::Key_Space && con_cad == 0){
             //Prueba agregar un disparo_mago
             discab.push_back(new disparo_c);
-            discab.back()->posx = bars[0]->getEsf()->getPX();
-            discab.back()->posy = 720 - bars[0]->getEsf()->getPY();
-            discab.back()->moment = bars[0]->moment;
+            discab.back()->posx = jug->getEsf()->getPX();
+            discab.back()->posy = 720 - jug->getEsf()->getPY();
+            discab.back()->moment = jug->moment;
             discab.back()->setPos(discab.back()->posx,discab.back()->posy);
             scene->addItem(discab.back());
             con_cad = 100;
