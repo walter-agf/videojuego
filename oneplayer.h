@@ -40,6 +40,8 @@ public:
     int cantidad_x, cantidad_y;
     float distancia = 0;
     int vida_one  = 100;//vida del jugador
+    int puntuacion_one  = 0;//puntuacion del jugador
+    int vida_j  = 1000;//vida del jefe
     int estado = 0, est_mago = 0, con_cad = 0;
     bool eliminar = false;//eliminar disparos
     void nivel(string num_);// trbajo del nivel

@@ -35,14 +35,23 @@ void oneplayer::nivel(string num_)
     if (num_ == "1"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_1.png"));
         estacion = uno();
+        //Vida
         vida_one = 100;
         ui->vida->setText(QString::number(vida_one));
         ui->vida->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(0, 255, 0);");
+        //Puntuacion
+        puntuacion_one = 0;
+        ui->puntuacion->setText(QString::number(puntuacion_one));
+        ui->puntuacion->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 220, 44);");
         jefe = new jefe_uno(this);
         jefe->posx = 4960;
         jefe->posy = 400;
         jefe->actualizar_jefe_uno();
         scene->addItem(jefe);
+        //vida del jefe
+        vida_j = 1000;
+        ui->vida_jefe->setText(QString::number(vida_j));
+        ui->vida_jefe->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 0, 4);");
     }
     else if (num_ == "2"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));
@@ -58,6 +67,10 @@ void oneplayer::nivel(string num_)
         jefe->posy = 400;
         jefe->actualizar_jefe_uno();
         scene->addItem(jefe);
+        //vida del jefe
+        vida_j = 1000;
+        ui->vida_jefe->setText(QString::number(vida_j));
+        ui->vida_jefe->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 0, 4);");
     }
     else if (num_ == "3"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_3.png"));
@@ -73,6 +86,10 @@ void oneplayer::nivel(string num_)
         jefe->posy = 480;
         jefe->actualizar_jefe_uno();
         scene->addItem(jefe);
+        //vida del jefe
+        vida_j = 1000;
+        ui->vida_jefe->setText(QString::number(vida_j));
+        ui->vida_jefe->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 0, 4);");
     }
 
     for (int i = 0; i < estacion.size(); i++){
@@ -151,6 +168,8 @@ void oneplayer::actualizar()
             if (tauros[t]->collidesWithItem(discab[o])){
                 scene->removeItem(tauros[t]);
                 tauros.removeAt(t);
+                puntuacion_one += 4;
+                ui->puntuacion->setText(QString::number(puntuacion_one));
                 eliminar = true;
                 break;
             }
@@ -160,6 +179,8 @@ void oneplayer::actualizar()
             if (magos[m]->collidesWithItem(discab[o])){
                 scene->removeItem(magos[m]);
                 magos.removeAt(m);
+                puntuacion_one += 6;
+                ui->puntuacion->setText(QString::number(puntuacion_one));
                 eliminar = true;
                 break;
             }
@@ -169,8 +190,21 @@ void oneplayer::actualizar()
             if (dismag[e]->collidesWithItem(discab[o])){
                 scene->removeItem(dismag[e]);
                 dismag.removeAt(e);
+                puntuacion_one += 1;
+                ui->puntuacion->setText(QString::number(puntuacion_one));
                 eliminar = true;
                 break;
+            }
+        }
+        if (jefe != NULL){
+            if (jefe->collidesWithItem(discab[o])){
+                vida_j -= 20;
+                ui->vida_jefe->setText(QString::number(vida_j));
+                eliminar = true;
+            }
+            if (vida_j == 0){
+                scene->removeItem(jefe);
+                jefe = NULL;
             }
         }
         //eliminar disparo
