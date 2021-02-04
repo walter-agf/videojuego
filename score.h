@@ -2,6 +2,8 @@
 #define SCORE_H
 
 #include <QMainWindow>
+#include <QFile>
+#include <QTextStream>
 
 namespace Ui {
 class score;

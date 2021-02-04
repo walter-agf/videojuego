@@ -43,6 +43,11 @@ void oneplayer::nivel(string num_)
         puntuacion_one = 0;
         ui->puntuacion->setText(QString::number(puntuacion_one));
         ui->puntuacion->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 220, 44);");
+        for (int i = 0; i < contras.size(); i++){scene->removeItem(contras[i]);}
+        contras.clear();
+        for (int i = 0; i < magos.size(); i++){scene->removeItem(magos[i]);}
+        magos.clear();
+        for (int i = 0; i < tauros.size(); i++){scene->removeItem(tauros[i]);}
         jefe = new jefe_uno(this);
         jefe->posx = 4960;
         jefe->posy = 400;
@@ -413,6 +418,16 @@ void oneplayer::actualizar()
             QMessageBox::about (this,"ContraCruzada", val);
             close();
         }
+        //_______________________________________
+        string name = "guardar.txt", data = "";
+        fstream k(name, fstream::out | fstream::ate);
+        data += to_string(puntuacion_one) + "\n";
+        data += to_string(vida_one) + "\n";
+        data += to_string(dificultad) +"\n";
+        data += num;
+        k.write(data.c_str(), data.length());
+        k.close();
+        //_______________________________________
         w_limit = 0;
         scene->setSceneRect(w_limit,0,1280,720);
         b->set_vel(0,0,50,300);
@@ -431,6 +446,11 @@ void oneplayer::actualizar()
     }
     if (jug->moment == 6 || jug->moment == 7){
         if (jug->columnas == 396 && vida_one <= 0){
+            //___________________________________________
+
+
+
+            //___________________________________________
             QString val;
             val = "";
             val += "Jugador 1 Elimindo :_(\n\nDerrotado";
@@ -595,3 +615,59 @@ void oneplayer::on_actionPausa_triggered()
         timer->start(7);
     }
 }
+
+void oneplayer::on_actionComo_Jugar_triggered()
+{
+
+}
+
+void oneplayer::on_actionCargar_partida_triggered()
+{
+    if (jefe != NULL){
+        scene->removeItem(jefe);
+        jefe = NULL;
+    }
+    long long int tam;
+    string name, aux;
+    int i;
+    name = "guardar.txt";
+    string data;
+    fstream k(name, fstream::in | fstream::ate);
+    if(k.is_open()){
+        tam=k.tellg();
+        k.seekg(0);
+        for(long long int e=0;e<tam; e++) data.push_back(k.get());
+        for(i=0; i<= data.find('\n'); i++){
+          aux.push_back(data[i]);
+        }
+        puntuacion_one = atoi(aux.c_str());
+        ui->puntuacion->setText(QString::number(puntuacion_one));
+        aux = "";
+        for ( ; data[i]!='\n'; i++){
+            aux.push_back(data[i]);
+        }
+        vida_one = atoi(aux.c_str());
+        ui->vida->setText(QString::number(vida_one));
+
+        aux = "";
+        i++;
+        for ( ; data[i]!='\n'; i++){
+            aux.push_back(data[i]);
+        }
+        dificultad = stof(aux);
+        num = data[i+1];
+        w_limit = 0;
+        scene->setSceneRect(w_limit,0,1280,720);
+        jug->getEsf()->set_vel(0,0,50,300);
+        nivel(num);
+  }
+  else {
+      QString val;
+      val = "";
+      val += "La partida no existe";
+      QMessageBox::about (this,"ContraCruzada", val);
+  }
+  k.close();
+}
+
+void oneplayer::on_actionGuardar_partida_triggered(){}

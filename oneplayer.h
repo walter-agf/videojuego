@@ -54,6 +54,12 @@ private slots:
     void on_actionVolver_triggered();
     void on_actionReiniciar_triggered();
     void on_actionPausa_triggered();
+    void on_actionComo_Jugar_triggered();
+
+    void on_actionCargar_partida_triggered();
+
+    void on_actionGuardar_partida_triggered();
+
 private:
     Ui::oneplayer *ui;
     oneplayer *one;

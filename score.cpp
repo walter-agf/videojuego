@@ -6,6 +6,18 @@ score::score(QWidget *parent) :
     ui(new Ui::score)
 {
     ui->setupUi(this);
+    QFile pun;
+    //_______________
+    QTextStream io;
+    QString valor;
+    //_______________
+    pun.setFileName(":/documentos/score.txt");
+    pun.open(QIODevice::Text | QIODevice::ReadOnly);
+    io.setDevice(&pun);
+    valor = io.readAll();
+    pun.close();
+
+    ui->texto->setText(valor);
 }
 
 score::~score()

@@ -20,5 +20,6 @@
         <file>pictures/disparo_jugador.png</file>
         <file>pictures/disparo_jefe_caida.png</file>
         <file>pictures/disparo_jefe_recto.png</file>
+        <file>documentos/score.txt</file>
     </qresource>
 </RCC>

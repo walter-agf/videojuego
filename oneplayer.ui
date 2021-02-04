@@ -239,6 +239,7 @@ color: rgb(255, 0, 4);</string>
     <addaction name="actionVolver"/>
     <addaction name="actionReiniciar"/>
     <addaction name="actionPausa"/>
+    <addaction name="actionCargar_partida"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -274,6 +275,11 @@ color: rgb(255, 0, 4);</string>
    </property>
    <property name="shortcut">
     <string>Esc</string>
+   </property>
+  </action>
+  <action name="actionCargar_partida">
+   <property name="text">
+    <string>Cargar partida</string>
    </property>
   </action>
  </widget>

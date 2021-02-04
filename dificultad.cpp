@@ -35,6 +35,15 @@ void dificultad::on_pushButton_clicked()
     }
     else if (v == 2){
         two = new multiplayer(this);
+        if (ui->facil->isChecked()){
+            two->dificultad = 0.5;
+        }
+        else if (ui->medio->isChecked()){
+            two->dificultad = 1;
+        }
+        else if (ui->dificil->isChecked()){
+            two->dificultad = 1.4;
+        }
         two->show();
     }
     close();
