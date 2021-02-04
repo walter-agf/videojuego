@@ -28,8 +28,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    one = new oneplayer(this);
-    one->show();
+    dif = new dificultad(this);
+    dif->setGeometry(310,230,180,220);
+    dif->v = 1;
+    dif->show();
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -39,8 +41,10 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    two = new multiplayer(this);
-    two->show();
+    dif = new dificultad(this);
+    dif->setGeometry(310,330,180,220);
+    dif->v = 2;
+    dif->show();
 }
 
 void MainWindow::on_pushButton_3_clicked()

@@ -8,10 +8,9 @@
 #include <QMediaPlayer>
 #include "elemento.h"
 #include "grafica.h"
-#include "oneplayer.h"
-#include "multiplayer.h"
 #include "score.h"
 #include "inicio.h"
+#include "dificultad.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -56,9 +55,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    oneplayer *one;
-    multiplayer *two;
     score *puntuacion;
+
+    dificultad *dif;
 
     QGraphicsScene *scene;
 

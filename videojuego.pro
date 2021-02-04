@@ -10,6 +10,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dificultad.cpp \
     dis_jefe_1.cpp \
     dis_jefe_2.cpp \
     disparo_c.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
     score.cpp
 
 HEADERS += \
+    dificultad.h \
     dis_jefe_1.h \
     dis_jefe_2.h \
     disparo_c.h \
@@ -47,6 +49,7 @@ HEADERS += \
     score.h
 
 FORMS += \
+    dificultad.ui \
     mainwindow.ui \
     multiplayer.ui \
     oneplayer.ui \

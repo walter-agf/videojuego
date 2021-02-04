@@ -22,7 +22,7 @@ oneplayer::oneplayer(QWidget *parent) :
     scene->addItem(jug);
 
     //Se construye el nivel seleccionado
-    num = "2"; //Selecciona el nivel a comenzar
+    num = "1"; //Selecciona el nivel a comenzar
     nivel(num);
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
 
@@ -52,6 +52,7 @@ void oneplayer::nivel(string num_)
         vida_j = 1000;
         ui->vida_jefe->setText(QString::number(vida_j));
         ui->vida_jefe->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 0, 4);");
+        enemigo = 1;
     }
     else if (num_ == "2"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_2.png"));
@@ -71,6 +72,7 @@ void oneplayer::nivel(string num_)
         vida_j = 1000;
         ui->vida_jefe->setText(QString::number(vida_j));
         ui->vida_jefe->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 0, 4);");
+        enemigo = 1;
     }
     else if (num_ == "3"){
         scene->setBackgroundBrush(QPixmap(":/pictures/nivel_3.png"));
@@ -90,6 +92,7 @@ void oneplayer::nivel(string num_)
         vida_j = 1000;
         ui->vida_jefe->setText(QString::number(vida_j));
         ui->vida_jefe->setStyleSheet("font: 75 18pt 'Verdana';color: rgb(255, 0, 4);");
+        enemigo = 1;
     }
 
     for (int i = 0; i < estacion.size(); i++){
@@ -169,7 +172,7 @@ void oneplayer::actualizar()
             if (tauros[t]->collidesWithItem(discab[o])){
                 scene->removeItem(tauros[t]);
                 tauros.removeAt(t);
-                puntuacion_one += 4;
+                puntuacion_one += 400 * dificultad;
                 ui->puntuacion->setText(QString::number(puntuacion_one));
                 eliminar = true;
                 break;
@@ -180,7 +183,7 @@ void oneplayer::actualizar()
             if (magos[m]->collidesWithItem(discab[o])){
                 scene->removeItem(magos[m]);
                 magos.removeAt(m);
-                puntuacion_one += 6;
+                puntuacion_one += 600 * dificultad;
                 ui->puntuacion->setText(QString::number(puntuacion_one));
                 eliminar = true;
                 break;
@@ -191,7 +194,7 @@ void oneplayer::actualizar()
             if (dismag[e]->collidesWithItem(discab[o])){
                 scene->removeItem(dismag[e]);
                 dismag.removeAt(e);
-                puntuacion_one += 1;
+                puntuacion_one += 100 * dificultad;
                 ui->puntuacion->setText(QString::number(puntuacion_one));
                 eliminar = true;
                 break;
@@ -199,11 +202,16 @@ void oneplayer::actualizar()
         }
         if (jefe != NULL){
             if (jefe->collidesWithItem(discab[o])){
-                vida_j -= 50;//resta del jefe
+                puntuacion_one += 100 * dificultad;
+                ui->puntuacion->setText(QString::number(puntuacion_one));
+                vida_j -= 50 / dificultad;//resta del jefe
+                if (vida_j < 0) {vida_j = 0;}
                 ui->vida_jefe->setText(QString::number(vida_j));
                 eliminar = true;
             }
-            if (vida_j == 0){
+            if (vida_j <= 0){
+                puntuacion_one += 700 * dificultad;
+                ui->puntuacion->setText(QString::number(puntuacion_one));
                 scene->removeItem(jefe);
                 jefe = NULL;
             }
@@ -221,12 +229,8 @@ void oneplayer::actualizar()
     //______________________________________________
 
     for (int j = 0; j < dis_j1.size(); j++){ // disparo uno de jefe
-        dis_j1[j]->posx -= 2;
+        dis_j1[j]->posx -= 2 *dificultad;
         dis_j1[j]->setPos(dis_j1[j]->posx,dis_j1[j]->posy);
-        if (dis_j1[j]->posx < 3840){
-            scene->removeItem(dis_j1[j]);
-            dis_j1.removeAt(j);
-        }
         if (dis_j1[j]->collidesWithItem(jug)){
             vida_one -= 4;//resta del jefe
             ui->vida->setText(QString::number(vida_one));
@@ -234,8 +238,14 @@ void oneplayer::actualizar()
             dis_j1.removeAt(j);
         }
     }
+    if (dis_j1.size() > 0){
+        if (dis_j1[0]->posx < 3840){
+            scene->removeItem(dis_j1[0]);
+            dis_j1.removeAt(0);
+        }
+    }
     for (int u = 0; u < dis_j2.size(); u++){ // disparo dos del jefe
-        dis_j2[u]->posy += 1.5;
+        dis_j2[u]->posy += 2 * dificultad;
         dis_j2[u]->setPos(dis_j2[u]->posx,dis_j2[u]->posy);
 
         if (dis_j2[u]->collidesWithItem(jug)){
@@ -272,12 +282,12 @@ void oneplayer::actualizar()
                 if (tauros[t]->collidesWithItem(contras[a])){ //movimiento
                     if (b->getPX() < tauros[t]->posx){ // derecha
                         tauros[t]->moment = 3;
-                        tauros[t]->posx -= 0.8;
+                        tauros[t]->posx -= 0.8 * dificultad; //Vel_Derecha
                         tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
                     }
                     else if (b->getPX() > tauros[t]->posx){ //izquierda
                         tauros[t]->moment = 2;
-                        tauros[t]->posx += 0.8;
+                        tauros[t]->posx += 0.8 *  dificultad; // Vel_ Izquierda
                         tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
                     }
                     if (tauros[t]->collidesWithItem(jug) && estado == 0 && vida_one > 0){ //colicion con el jugador
@@ -293,14 +303,14 @@ void oneplayer::actualizar()
                 distancia = pow(b->getPX() - magos[m]->posx,2);
                 distancia += pow((720 - b->getPY()) - magos[m]->posy,2);
                 distancia = pow (distancia,0.5);//calculo del rango
-                if (distancia < magos[m]->rango && estado == 0  && vida_one > 0){
+                if (distancia < (magos[m]->rango * dificultad) && estado == 0  && vida_one > 0){
                     if (magos[m]->collidesWithItem(jug) && estado == 0 && vida_one > 0){
                         vida_one -= 4;
                         ui->vida->setText(QString::number(vida_one));
                         if (b->getPX() < magos[m]->posx){b->set_vel(-20,10,b->getPX()-10,b->getPY()+0.0171);}
                         else {b->set_vel(20,10,b->getPX()+10,b->getPY()+0.0171);}
                     }
-                    estado = 500; //velocidad de disparo del mago
+                    estado = 500 / dificultad; //velocidad de disparo del mago
                     //disparo_mago
                     dismag.push_back(new disparo_m);
                     dismag.back()->posx = magos[m]->posx;
@@ -312,7 +322,7 @@ void oneplayer::actualizar()
             }
             //_________________Disparo__Jefe________________
 
-            if (b->getPX() > 3840 && vida_j > 0 && disparo_jefe == 0){
+            if (b->getPX() > 3840 && vida_j > 0 && disparo_jefe == 0){ //disparo recto
                 tipo_dis=1+rand()%(10);
                 if ( tipo_dis <= 5){
                     dis_j1.push_back(new dis_jefe_1);
@@ -320,9 +330,8 @@ void oneplayer::actualizar()
                     dis_j1.back()->posy = 720 - jug->getEsf()->getPY();
                     dis_j1.back()->setPos(dis_j1.back()->posx,dis_j1.back()->posy);
                     scene->addItem(dis_j1.back());
-                    disparo_jefe = 200;
                 }
-                else if (tipo_dis > 5 && tipo_dis <= 8) {
+                else if (tipo_dis > 5 && tipo_dis <= 8) { // disparo alto
                     tipo_dis=3840+rand()%(100);
                     while (tipo_dis < 5120){
                         dis_j2.push_back(new dis_jefe_2);
@@ -330,15 +339,13 @@ void oneplayer::actualizar()
                         dis_j2.back()->posy = 24;
                         dis_j2.back()->setPos(dis_j2.back()->posx,dis_j2.back()->posy);
                         scene->addItem(dis_j2.back());
-                        tipo_dis += 100;
+                        tipo_dis += 150 / dificultad;
                     }
-                    disparo_jefe = 200;
                 }
-                else {
-
-                    for (int n; n < contras.size(); n++){
+                else { //invocacion
+                    for (int n = 0; n < contras.size(); n++){
                         if (contras[n]->posx >= 3840){
-                            if ( num == "3"){
+                            if ( num == "3" && tauros.size() < enemigo + 3){
                                 tauros.push_back(new minotauro);
                                 tauros.back()->posx = (cantidad_x/2) + numero_x;
                                 tauros.back()->posy = numero_y-18;
@@ -346,8 +353,8 @@ void oneplayer::actualizar()
                                 scene->addItem(tauros.back());
                             }
                             else {
-                                tipo_dis=1+rand()%(7);
-                                if (tipo_dis == 2){
+                                tipo_dis=1+rand()%(3);
+                                if (tipo_dis == 2 && magos.size() < enemigo + 3){
                                     magos.push_back(new mago);
                                     magos.back()->posx = (contras[n]->w/2) + contras[n]->posx;
                                     magos.back()->posy = contras[n]->posy-30;
@@ -358,6 +365,7 @@ void oneplayer::actualizar()
                         }
                     }
                 }
+                disparo_jefe = 420 / dificultad;
             }
             //______________________________________________
             if (jug->collidesWithItem(jefe)){ //colicion con el jefe
@@ -377,6 +385,10 @@ void oneplayer::actualizar()
     if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){
         w_limit += 1280;
         b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
+        if (b->getPX() -22 > 3800){
+            if (num == "3"){enemigo = tauros.size();}
+            else {enemigo = magos.size();}
+        }
         scene->setSceneRect(w_limit,0,1280,720);
     }
     //Retroceder pantalla
@@ -431,25 +443,25 @@ void oneplayer::actualizar()
     if (conti == false){
         close();
     }
-    for (int e=0; e < dismag.size(); e++){
+    for (int e=0; e < dismag.size(); e++){ // disparos del mago
 
         if (b->getPX() < dismag[e]->posx){
-            dismag[e]->posx -= 0.6;
+            dismag[e]->posx -= 0.6 * dificultad;
             dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
         }
         else if (b->getPX() > dismag[e]->posx){
-            dismag[e]->posx += 0.6;
+            dismag[e]->posx += 0.6 * dificultad;
             dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
         }
 
 
         if (720 - b->getPY() < dismag[e]->posy){
-            dismag[e]->posy -= 0.6;
+            dismag[e]->posy -= 0.6 * dificultad;
             dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
         }
 
         else if (720 - b->getPY() > dismag[e]->posy){
-            dismag[e]->posy += 0.6;
+            dismag[e]->posy += 0.6 * dificultad;
             dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
         }
 
@@ -559,6 +571,7 @@ void oneplayer::keyPressEvent(QKeyEvent *event)
             discab.back()->posy = 720 - jug->getEsf()->getPY();
             discab.back()->moment = jug->moment;
             discab.back()->setPos(discab.back()->posx,discab.back()->posy);
+            discab.back()->rango /= dificultad;
             scene->addItem(discab.back());
             con_cad = 100;
         }
