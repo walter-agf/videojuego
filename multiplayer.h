@@ -40,7 +40,7 @@ public:
     string dato, x_pix, y_pix, x_tam, y_tam,num;
     int numero_x,numero_y, largo;
     int cantidad_x, cantidad_y;
-    float distancia = 0, dificultad = 0;
+    float distancia = 0, dificultad = 1;
     int vida_one  = 100;//vida del jugador
     int puntuacion_one  = 0;//puntuacion del jugador
     int vida_j  = 1000;//vida del jefe
