@@ -171,6 +171,7 @@ void multiplayer::actualizar()
         elemento *b = bars[i]->getEsf();
         bars[i]->actualizar_grafica();
         borderCollision(b);
+
         //----------------Disparo____del__jugador_______
         for (int o = 0; o < discab.size(); o++){
             if (discab[o]->moment == 0 || discab[o]->moment == 2 || discab[o]->moment == 4 || discab[o]->moment == 8){discab[o]->posx += 2;}
@@ -291,15 +292,17 @@ void multiplayer::actualizar()
                 //Enemigos__________________________Fisica_Logicas___________________________________________________
                 for (int t = 0;t < tauros.size();t++){
                     if (tauros[t]->collidesWithItem(contras[a])){ //movimiento
-                        if (b->getPX() < tauros[t]->posx){ // derecha
+                        if (b->getPX() < tauros[t]->posx && col_tau == 0){ // derecha
                             tauros[t]->moment = 3;
                             tauros[t]->posx -= 0.8 * dificultad; //Vel_Derecha
                             tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
+                            col_tau = 1;
                         }
-                        else if (b->getPX() > tauros[t]->posx){ //izquierda
+                        else if (b->getPX() > tauros[t]->posx && col_tau == 0){ //izquierda
                             tauros[t]->moment = 2;
                             tauros[t]->posx += 0.8 *  dificultad; // Vel_ Izquierda
                             tauros[t]->setPos(tauros[t]->posx,tauros[t]->posy);
+                            col_tau = 1;
                         }
                         if (tauros[t]->collidesWithItem(bars[i]) && estado == 0 && vida_one > 0){ //colicion con el jugador
                             vida_one -= 4;
@@ -394,50 +397,68 @@ void multiplayer::actualizar()
         //Cambios de pantalla o nivel
         //Avanzar pantalla
         if (b->getPX() + 22 > w_limit + 1280 && b->getPX() < 4000){
-            w_limit += 1280;
-            b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
-            if (b->getPX() -22 > 3800){
-                if (num == "3"){enemigo = tauros.size();}
-                else {enemigo = magos.size();}
+            if (col_s == 0){col_s = 1;}
+            else if (col_s == 1){
+                w_limit += 1280;
+                b->set_vel(b->getVX(),b->getVY(),b->getPX()+60,b->getPY());
+                elemento *t = bars[0]->getEsf();
+                t->set_vel(t->getVX(),t->getVY(),t->getPX()+60,t->getPY());
+                if (b->getPX() -22 > 3800){
+                    if (num == "3"){enemigo = tauros.size();}
+                    else {enemigo = magos.size();}
+                }
+                scene->setSceneRect(w_limit,0,1280,720);
             }
-            scene->setSceneRect(w_limit,0,1280,720);
+
         }
         //Retroceder pantalla
         else if (b->getPX() - 22 < w_limit && b->getPX() > 200){
-            if (b->getPX() -22 > 3800){
-                b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX() + 10,b->getPY());
+            if (col_s == 0){col_s = 1;}
+            else if (col_s == 1){
+                elemento *t = bars[0]->getEsf();
+                if (b->getPX() -22 > 3800){
+                    b->set_vel(-1*b->getE()*b->getVX(),b->getVY(),b->getPX() + 10,b->getPY());
+                    t->set_vel(t->getVX(),t->getVY(),t->getPX()+60,t->getPY());
+                }
+                else{
+                    w_limit -= 1280;
+                    b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
+                    t->set_vel(t->getVX(),t->getVY(),t->getPX()+60,t->getPY());
+                    scene->setSceneRect(w_limit,0,1280,720);
+                }
             }
-            else{
-                w_limit -= 1280;
-                b->set_vel(b->getVX(),b->getVY(),b->getPX()-60,b->getPY());
-                scene->setSceneRect(w_limit,0,1280,720);
-            }
+
         }
         //Cambio de nivel
         else if (b->getPX() + 22 > 5070){
-            if (num == "1"){num = "2";}
-            else if (num == "2"){num = "3";}
-            else if  (num == "3"){
-                QString val;
-                val = "";
-                val += "Felicitaciones :D\n\nHas Ganado";
-                QMessageBox::about (this,"ContraCruzada", val);
-                close();
+            if (col_cambio == 0){col_cambio = 1;}
+            else if (col_cambio == 1){
+                if (num == "1"){num = "2";}
+                else if (num == "2"){num = "3";}
+                else if  (num == "3"){
+                    QString val;
+                    val = "";
+                    val += "Felicitaciones :D\n\nHas Ganado";
+                    QMessageBox::about (this,"ContraCruzada", val);
+                    close();
+                }
+                //_______________________________________
+                string name = "guardar.txt", data = "";
+                fstream k(name, fstream::out | fstream::ate);
+                data += to_string(puntuacion_one) + "\n";
+                data += to_string(vida_one) + "\n";
+                data += to_string(dificultad) +"\n";
+                data += num;
+                k.write(data.c_str(), data.length());
+                k.close();
+                //_______________________________________
+                w_limit = 0;
+                scene->setSceneRect(w_limit,0,1280,720);
+                elemento *t = bars[0]->getEsf();
+                t->set_vel(0,0,50,300);
+                b->set_vel(0,0,50,300);
+                nivel(num);
             }
-            //_______________________________________
-            string name = "guardar.txt", data = "";
-            fstream k(name, fstream::out | fstream::ate);
-            data += to_string(puntuacion_one) + "\n";
-            data += to_string(vida_one) + "\n";
-            data += to_string(dificultad) +"\n";
-            data += num;
-            k.write(data.c_str(), data.length());
-            k.close();
-            //_______________________________________
-            w_limit = 0;
-            scene->setSceneRect(w_limit,0,1280,720);
-            b->set_vel(0,0,50,300);
-            nivel(num);
         }
         else if (700 + b->getPY() <= 720 && bars[i]->moment != 6 && bars[i]->moment != 7){
             if (bars[i]->moment == 0 || bars[i]->moment == 2 || bars[i]->moment == 4 || bars[i]->moment == 8){bars[i]->moment = 6;}
@@ -450,13 +471,7 @@ void multiplayer::actualizar()
             else {bars[i]->moment = 7;}
             b->set_vel(0,0,b->getPX(),b->getPY());
         }
-        if (bars[i]->moment == 6 || bars[i]->moment == 7){
-            if (bars[i]->columnas == 396 && vida_one <= 0){
-                //___________________________________________
-
-
-
-                //___________________________________________
+        if (vida_one <= 0 && bars[i]->columnas == 396 && conti != false){
                 QString val;
                 val = "";
                 val += "Jugador 1 Elimindo :_(\n\nDerrotado";
@@ -464,33 +479,48 @@ void multiplayer::actualizar()
                 conti = false;
                 bars[i]->moment = 10;
                 bars[i]->columnas = 440;
-            }
         }
         if (conti == false){
             close();
         }
         for (int e=0; e < dismag.size(); e++){ // disparos del mago
-
-            if (b->getPX() < dismag[e]->posx){
-                dismag[e]->posx -= 0.6 * dificultad;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+            if (col_mag == 0) {
+                if (b->getPX() < dismag[e]->posx){
+                    dismag[e]->posx -= 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                else if (b->getPX() > dismag[e]->posx){
+                    dismag[e]->posx += 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                if (720 - b->getPY() < dismag[e]->posy){
+                    dismag[e]->posy -= 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                else if (720 - b->getPY() > dismag[e]->posy && col_mag == 0){
+                    dismag[e]->posy += 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                col_mag = 1;
             }
-            else if (b->getPX() > dismag[e]->posx){
-                dismag[e]->posx += 0.6 * dificultad;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+            else if (col_mag == 1){
+                if (b->getPX() < dismag[e]->posx){
+                    dismag[e]->posx -= 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                else if (b->getPX() > dismag[e]->posx){
+                    dismag[e]->posx += 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                if (720 - b->getPY() < dismag[e]->posy){
+                    dismag[e]->posy -= 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
+                else if (720 - b->getPY() > dismag[e]->posy && col_mag == 0){
+                    dismag[e]->posy += 0.6 * dificultad;
+                    dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
+                }
             }
-
-
-            if (720 - b->getPY() < dismag[e]->posy){
-                dismag[e]->posy -= 0.6 * dificultad;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
-            }
-
-            else if (720 - b->getPY() > dismag[e]->posy){
-                dismag[e]->posy += 0.6 * dificultad;
-                dismag[e]->setPos(dismag[e]->posx,dismag[e]->posy);
-            }
-
             if (dismag[e]->collidesWithItem(bars[i])){
                 vida_one -= 6;
                 ui->vida->setText(QString::number(vida_one));
@@ -503,6 +533,12 @@ void multiplayer::actualizar()
             }
         }
     }
+    //______________________________________________________
+    col_tau = 0;
+    col_mag = 0;
+    col_cambio = 0;
+    col_s = 0;
+    //______________________________________________________
 }
 
 void multiplayer::borderCollision(elemento *b)
@@ -693,8 +729,9 @@ void multiplayer::on_actionVolver_triggered(){close();}
 
 void multiplayer::on_actionReiniciar_triggered()
 {
-    close();
     two = new multiplayer(this);
+    two->dificultad = dificultad;
+    close();
     two->show();
 }
 

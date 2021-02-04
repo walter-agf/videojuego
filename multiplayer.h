@@ -48,6 +48,9 @@ public:
     bool eliminar = false;//eliminar disparos
     void nivel(string num_);// trbajo del nivel
     QList<muros*> contras;//creacion de muros
+    //____________________________________
+    int col_tau = 0, col_mag = 0,col_cambio = 0, col_s = 0;
+    //____________________________________
 public slots:
     void actualizar();
 private slots:

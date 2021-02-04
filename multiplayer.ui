@@ -260,6 +260,9 @@ color: rgb(0, 255, 0);</string>
    <property name="text">
     <string>Reiniciar</string>
    </property>
+   <property name="shortcut">
+    <string>R</string>
+   </property>
   </action>
   <action name="actionComo_jugar">
    <property name="text">
@@ -269,6 +272,9 @@ color: rgb(0, 255, 0);</string>
   <action name="actionPausa">
    <property name="text">
     <string>Pausa</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
    </property>
   </action>
   <action name="actionCargar_partida">

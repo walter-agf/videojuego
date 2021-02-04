@@ -109,7 +109,6 @@ void grafica::actualizacion_sprites()
         if(columnas < 396){
             columnas += 44;
         }
-
     }
 
     else if (moment == 7){
@@ -118,9 +117,7 @@ void grafica::actualizacion_sprites()
         if(columnas < 396){
             columnas += 44;
         }
-
     }
-
     else if (moment == 8){
 
         filas = 320;

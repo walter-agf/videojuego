@@ -601,8 +601,9 @@ void oneplayer::on_actionVolver_triggered(){close();}
 
 void oneplayer::on_actionReiniciar_triggered()
 {
-    close();
     one = new oneplayer(this);
+    one->dificultad = dificultad;
+    close();
     one->show();
 }
 
